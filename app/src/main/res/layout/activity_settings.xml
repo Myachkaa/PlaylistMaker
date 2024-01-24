@@ -15,30 +15,30 @@
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/medium_padding"
-            android:layout_marginTop="@dimen/medium_padding"
+            android:layout_marginStart="@dimen/padding_16"
+            android:layout_marginTop="@dimen/padding_16"
             android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/arrow_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/padding_28"
+            android:layout_marginTop="@dimen/padding_8"
             android:text="@string/setting"
             android:textColor="@color/black"
-            android:textSize="@dimen/primary_text_size" />
+            android:textSize="@dimen/text_size_22" />
 
     </LinearLayout>
 
     <Switch
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="61dp"
-        android:layout_marginStart="@dimen/medium_padding"
+        android:layout_height="@dimen/padding_48"
+        android:layout_marginTop="@dimen/padding_60"
+        android:layout_marginStart="@dimen/padding_16"
         android:text="@string/dark_theme"
         android:textColor="@color/black"
-        android:textSize="@dimen/small_text_size"
+        android:textSize="@dimen/text_size_16"
         tools:ignore="UseSwitchCompatOrMaterialXml"
         android:shadowColor="@color/black"/>
 
@@ -46,21 +46,21 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/big_padding">
+        android:layout_marginTop="@dimen/padding_32">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/medium_padding"
+            android:layout_marginStart="@dimen/padding_16"
             android:text="@string/share"
             android:textColor="@color/black"
-            android:textSize="@dimen/small_text_size" />
+            android:textSize="@dimen/text_size_16" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/standart_padding"
-            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/padding_12"
+            android:layout_gravity="end|center_vertical"
             android:src="@drawable/share" />
 
     </FrameLayout>
@@ -68,21 +68,21 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/large_padding">
+        android:layout_marginTop="@dimen/padding_40">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/medium_padding"
+            android:layout_marginStart="@dimen/padding_16"
             android:text="@string/support"
             android:textColor="@color/black"
-            android:textSize="@dimen/small_text_size" />
+            android:textSize="@dimen/text_size_16" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/standart_padding"
-            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/padding_12"
+            android:layout_gravity="end|center_vertical"
             android:src="@drawable/support" />
 
     </FrameLayout>
@@ -90,22 +90,21 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/large_padding">
+        android:layout_marginTop="@dimen/padding_40">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/medium_padding"
+            android:layout_marginStart="@dimen/padding_16"
             android:text="@string/agreement"
             android:textColor="@color/black"
-            android:textSize="@dimen/small_text_size"/>
+            android:textSize="@dimen/text_size_16"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="@dimen/standart_padding"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/padding_12"
             android:src="@drawable/arrow_forward" />
 
     </FrameLayout>
