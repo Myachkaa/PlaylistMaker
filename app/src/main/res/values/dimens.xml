@@ -2,13 +2,17 @@
 <resources>
     <dimen name="padding_0">0dp</dimen>
     <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
     <dimen name="padding_12">12dp</dimen>
     <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="padding_24">24dp</dimen>
     <dimen name="padding_28">28dp</dimen>
     <dimen name="padding_32">32dp</dimen>
     <dimen name="padding_40">44dp</dimen>
     <dimen name="padding_48">48dp</dimen>
     <dimen name="padding_60">60dp</dimen>
+    <dimen name="padding_64">64dp</dimen>
     <dimen name="text_size_22">22sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
 </resources>
