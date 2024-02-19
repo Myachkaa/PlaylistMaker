@@ -3,7 +3,6 @@ package com.practicum.playlistmaker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
@@ -15,15 +14,10 @@ class MainActivity : AppCompatActivity() {
         val library = findViewById<Button>(R.id.library)
         val setting = findViewById<Button>(R.id.setting)
 
-        val searchIntent = Intent(this, SearchActivity::class.java)
-
-        val searchClickListener: View.OnClickListener = object : View.OnClickListener {
-
-            override fun onClick(v: View?) {
-                startActivity(searchIntent)
-            }
+        search.setOnClickListener {
+            val searchIntent = Intent(this, SearchActivity::class.java)
+            startActivity(searchIntent)
         }
-        search.setOnClickListener(searchClickListener)
 
         library.setOnClickListener {
             val libraryIntent = Intent(this, LibraryActivity::class.java)
