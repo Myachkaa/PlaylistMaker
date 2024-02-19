@@ -16,18 +16,19 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val back = findViewById<ImageView>(R.id.back)
+        val backView = findViewById<ImageView>(R.id.back)
         val inputEditText = findViewById<EditText>(R.id.editText)
         val clearButton = findViewById<ImageView>(R.id.icon_clear)
 
 
-        back.setOnClickListener {
+        backView.setOnClickListener {
             finish()
         }
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             val currentFocus = currentFocus
             if (currentFocus != null) {
                 inputMethodManager?.hideSoftInputFromWindow(currentFocus.windowToken, 0)
@@ -43,21 +44,18 @@ class SearchActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 inputText = inputEditText.text.toString()
             }
-
-            private fun clearButtonVisibility(s: CharSequence?): Int {
-                return if (s.isNullOrEmpty()) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-            }
-
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
-
-
-
     }
+
+        private fun clearButtonVisibility(s: CharSequence?): Int {
+            return if (s.isNullOrEmpty()) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+        }
+
     private var searchText: String = TEXT_DEF
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
