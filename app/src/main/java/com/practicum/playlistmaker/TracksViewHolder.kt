@@ -1,10 +1,9 @@
 package com.practicum.playlistmaker
 
-import android.os.Build
+import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -15,7 +14,7 @@ class TracksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private var textViewArtistName: TextView = itemView.findViewById(R.id.textViewArtistName)
     private var textViewTrackTime: TextView = itemView.findViewById(R.id.textViewTrackTime)
 
-    @RequiresApi(Build.VERSION_CODES.S)
+
     fun bind(track: Track) {
         textViewTrackName.text = track.trackName
         textViewArtistName.text = track.artistName
@@ -25,7 +24,10 @@ class TracksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .load(track.artworkUrl100)
             .placeholder(R.drawable.placeholder)
             .centerCrop()
-            .transform(RoundedCorners(2))
+            .transform(RoundedCorners(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                2F,
+                itemView.context.resources.displayMetrics).toInt()))
             .into(imageViewArtwork)
     }
 }
