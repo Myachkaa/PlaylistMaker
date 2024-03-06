@@ -3,15 +3,14 @@ package com.practicum.playlistmaker
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -19,7 +18,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.HttpURLConnection.HTTP_OK
 
 class SearchActivity : AppCompatActivity() {
 
@@ -96,26 +94,12 @@ class SearchActivity : AppCompatActivity() {
             }
            else false
         }
-        val simpleTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.visibility = clearButtonVisibility(s)
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                inputText = inputEditText.text.toString()
-            }
-        }
-        inputEditText.addTextChangedListener(simpleTextWatcher)
-    }
-
-    private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
+        inputEditText.addTextChangedListener (
+            beforeTextChanged = {_, _, _, _ -> },
+            onTextChanged = {charSequence, _, _, _ -> clearButton.isVisible = !charSequence.isNullOrEmpty()},
+            afterTextChanged = {_ -> inputText = inputEditText.text.toString()}
+        )
     }
 
     private var searchText: String = TEXT_DEF
@@ -132,9 +116,9 @@ class SearchActivity : AppCompatActivity() {
     private fun showMessage() {
         tracks.clear()
         adapter.notifyDataSetChanged()
-        placeholderNetworkError.visibility = View.VISIBLE
-        updateButton.visibility = View.VISIBLE
-        placeholderNotFound.visibility = View.GONE
+        placeholderNetworkError.isVisible = true
+        updateButton.isVisible = true
+        placeholderNotFound.isVisible = false
     }
 
     private fun search(track: String) {
@@ -145,20 +129,20 @@ class SearchActivity : AppCompatActivity() {
                     response: Response<TracksResponse>
                 ) {
                     when (response.code()) {
-                        HTTP_OK -> {
-                            placeholderNetworkError.visibility = View.GONE
-                            updateButton.visibility = View.GONE
-                            placeholderNotFound.visibility = View.GONE
+                        200 -> {
+                            placeholderNetworkError.isVisible = false
+                            updateButton.isVisible = false
+                            placeholderNotFound.isVisible = false
                             if (response.body()?.tracks?.isNotEmpty() == true) {
                                 tracks.clear()
                                 tracks.addAll(response.body()?.tracks!!)
-                                tracksList.visibility = View.VISIBLE
+                                tracksList.isVisible = true
                                 adapter.notifyDataSetChanged()
                             } else {
                                 tracks.clear()
                                 adapter.notifyDataSetChanged()
-                                tracksList.visibility = View.GONE
-                                placeholderNotFound.visibility = View.VISIBLE
+                                tracksList.isVisible = false
+                                placeholderNotFound.isVisible = true
                             }
                         }
 
