@@ -43,9 +43,11 @@
             android:drawablePadding="@dimen/padding_8"
             android:drawableTint="?attr/colorOnTertiary"
             android:hint="@string/search"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
             android:paddingStart="@dimen/padding_12"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="?attr/colorOnTertiary"
             tools:ignore="TouchTargetSizeCheck" />
@@ -62,12 +64,43 @@
 
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewTracks"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/track_layout" />
+        android:layout_height="match_parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewTracks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <TextView
+            android:id="@+id/placeholderNotFound"
+            style="@style/PlaceholderStyle"
+            android:drawableTop="@drawable/not_found"
+            android:text="@string/not_found" />
+
+        <TextView
+            android:id="@+id/placeholderNetworkError"
+            style="@style/PlaceholderStyle"
+            android:layout_marginStart="@dimen/padding_24"
+            android:layout_marginEnd="@dimen/padding_24"
+            android:drawableTop="@drawable/network_error"
+            android:text="@string/network_error" />
+
+        <Button
+            android:id="@+id/updateButton"
+            style="@style/TextStyle14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/padding_348"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:text="@string/update"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorSecondary"
+            android:visibility="gone"
+            app:cornerRadius="@dimen/padding_54" />
+
+    </FrameLayout>
 </LinearLayout>
