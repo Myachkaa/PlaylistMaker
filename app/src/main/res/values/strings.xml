@@ -12,4 +12,7 @@
     <string name="message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="support_mail">myachkaaa@ya.ru</string>
     <string name="agreement_link">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="not_found">Ничего не нашлось</string>
+    <string name="network_error">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="update">Обновить</string>
 </resources>
