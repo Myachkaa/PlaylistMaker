@@ -1,13 +1,17 @@
 package com.practicum.playlistmaker
 
+
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.Switch
+import androidx.appcompat.app.AppCompatDelegate
 
 class SettingsActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -16,6 +20,13 @@ class SettingsActivity : AppCompatActivity() {
         val share = findViewById<FrameLayout>(R.id.share)
         val support = findViewById<FrameLayout>(R.id.support)
         val agreement = findViewById<FrameLayout>(R.id.agreement)
+        val themeSwitcher = findViewById<Switch>(R.id.themeSwitcher)
+
+        themeSwitcher.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+
+        themeSwitcher.setOnCheckedChangeListener { _, checked ->
+            (applicationContext as App).switchTheme(checked)
+        }
 
         back.setOnClickListener {
             finish()
