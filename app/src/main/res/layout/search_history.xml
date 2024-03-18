@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/searchHistory"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorSecondary"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/padding_40"
+    android:theme="@style/Theme.PlaylistMaker">
+
+    <TextView
+        android:id="@+id/historyTitle"
+        style="@style/TextStyle19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/padding_24"
+        android:text="@string/search_history"
+        android:textColor="?attr/colorOnPrimary" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewHistory"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_0"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/clearHistory"
+        style="@style/TextStyle14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/padding_24"
+        android:backgroundTint="?attr/colorOnPrimary"
+        android:text="@string/clear_history"
+        android:textAllCaps="false"
+        android:textColor="?attr/colorSecondary"
+        app:cornerRadius="@dimen/padding_54" />
+
+</LinearLayout>

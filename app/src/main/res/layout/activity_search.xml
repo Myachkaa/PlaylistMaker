@@ -71,8 +71,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewTracks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/placeholderNotFound"
@@ -101,6 +100,8 @@
             android:textColor="?attr/colorSecondary"
             android:visibility="gone"
             app:cornerRadius="@dimen/padding_54" />
+
+        <include layout="@layout/search_history" />
 
     </FrameLayout>
 </LinearLayout>
