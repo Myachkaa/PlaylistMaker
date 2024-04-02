@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
@@ -14,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -77,9 +79,7 @@ class SearchActivity : AppCompatActivity() {
 
         historyVisibility()
 
-        backView.setOnClickListener {
-            finish()
-        }
+        backView.setOnClickListener { finish() }
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
@@ -89,13 +89,14 @@ class SearchActivity : AppCompatActivity() {
             if (currentFocus != null) {
                 inputMethodManager?.hideSoftInputFromWindow(currentFocus.windowToken, 0)
                 tracks.clear()
+                placeholderNetworkError.isVisible = false
+                updateButton.isVisible = false
+                placeholderNotFound.isVisible = false
                 adapter.notifyDataSetChanged()
             }
         }
 
-        updateButton.setOnClickListener {
-            search(lastTrack)
-        }
+        updateButton.setOnClickListener { search(lastTrack) }
 
 
         clearHistory.setOnClickListener {
@@ -211,6 +212,12 @@ class SearchActivity : AppCompatActivity() {
         searchHistory.saveTrack(track)
         historyAdapter.tracks = searchHistory.getSearchHistory() as ArrayList<Track>
         historyAdapter.notifyDataSetChanged()
+
+        val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
+        val gson = Gson()
+        val trackJson = gson.toJson(track)
+        audioPlayerIntent.putExtra("trackJson", trackJson)
+        startActivity(audioPlayerIntent)
     }
 
     companion object {

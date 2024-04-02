@@ -28,15 +28,15 @@ class SettingsActivity : AppCompatActivity() {
             (applicationContext as App).switchTheme(checked)
         }
 
-        back.setOnClickListener {
-            finish()
-        }
+        back.setOnClickListener { finish() }
+
         share.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
             shareIntent.type = "text/plain"
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share)))
         }
+
         support.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             supportIntent.data = Uri.parse("mailto:")
@@ -45,6 +45,7 @@ class SettingsActivity : AppCompatActivity() {
             supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_mail))
             startActivity(supportIntent)
         }
+
         agreement.setOnClickListener {
             val agreementIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.agreement_link)))
             startActivity(agreementIntent)

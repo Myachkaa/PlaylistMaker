@@ -1,27 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="TextStyle22">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_size_22</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
+
     <style name="TextStyle19">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_size_19</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
+
     <style name="TextStyle16">
         <item name="android:textSize">@dimen/text_size_16</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
+
     <style name="TextStyle14">
         <item name="android:textSize">@dimen/text_size_14</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
+
+    <style name="TextStyle13Gray">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">@dimen/text_size_13</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="TextStyle13Black">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/text_size_13</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
     <style name="TextStyle11">
         <item name="android:textSize">@dimen/text_size_11</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
+
     <style name="MainButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -40,6 +58,7 @@
         <item name="iconPadding">@dimen/padding_8</item>
         <item name="iconTint">@color/black</item>
     </style>
+
     <style name="ImageLocationSetting">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -47,6 +66,7 @@
         <item name="android:layout_marginEnd">@dimen/padding_12</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
+
     <style name="TextLocationSetting" parent="TextStyle16">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -54,6 +74,7 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
+
     <style name="BackButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -63,6 +84,7 @@
         <item name="tint">?attr/colorOnPrimary</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
+
     <style name="HeadingStyle" parent="TextStyle22">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -71,6 +93,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
+
     <style name="PlaceholderStyle" parent="TextStyle19">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
