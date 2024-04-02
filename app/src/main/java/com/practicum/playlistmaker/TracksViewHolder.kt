@@ -21,6 +21,7 @@ class TracksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         textViewTrackName.text = track.trackName
         textViewArtistName.text = track.artistName
         textViewTrackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime)
+        textViewArtistName.requestLayout()
 
         Glide.with(itemView)
             .load(track.artworkUrl100)

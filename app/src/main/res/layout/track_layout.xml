@@ -42,19 +42,13 @@
             <TextView
                 android:id="@+id/textViewArtistName"
                 style="@style/TextStyle11"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/padding_0"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="?attr/colorSecondaryVariant"
                 tools:text="Artist Name" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/padding_4"
-                android:src="@drawable/point_separator"
-                app:tint="?attr/colorSecondaryVariant" />
 
             <TextView
                 android:id="@+id/textViewTrackTime"
@@ -62,8 +56,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/padding_4"
+                android:layout_marginEnd="@dimen/padding_8"
+                android:drawablePadding="@dimen/padding_4"
                 android:maxLines="1"
                 android:textColor="?attr/colorSecondaryVariant"
+                app:drawableStartCompat="@drawable/point_separator"
                 tools:text="0:00" />
 
         </LinearLayout>
