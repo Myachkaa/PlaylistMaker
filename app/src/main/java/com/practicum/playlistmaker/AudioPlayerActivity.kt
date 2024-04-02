@@ -63,9 +63,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             collectionNameTextView.isVisible = false
         } else playerCollectionName.text = track.collectionName
 
-        backButton.setOnClickListener {
-            finish()
-        }
+        backButton.setOnClickListener { finish() }
     }
 
     override fun onPause() {

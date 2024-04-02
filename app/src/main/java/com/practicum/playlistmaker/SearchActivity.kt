@@ -79,7 +79,7 @@ class SearchActivity : AppCompatActivity() {
 
         historyVisibility()
 
-        backView.setOnClickListener {finish() }
+        backView.setOnClickListener { finish() }
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
@@ -96,9 +96,7 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        updateButton.setOnClickListener {
-            search(lastTrack)
-        }
+        updateButton.setOnClickListener { search(lastTrack) }
 
 
         clearHistory.setOnClickListener {
