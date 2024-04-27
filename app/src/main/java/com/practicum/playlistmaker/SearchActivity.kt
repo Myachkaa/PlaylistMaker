@@ -4,12 +4,15 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -35,6 +38,10 @@ class SearchActivity : AppCompatActivity() {
     private val tracks = ArrayList<Track>()
     private val adapter = TrackAdapter()
 
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { searchRequest(inputEditText.text.toString()) }
+
     private lateinit var updateButton: Button
     private lateinit var placeholderNetworkError: TextView
     private lateinit var placeholderNotFound: TextView
@@ -44,6 +51,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistory: SearchHistory
     private lateinit var historyAdapter: TrackAdapter
     private lateinit var searchHistoryLayout: LinearLayout
+    private lateinit var progressBar: ProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,13 +73,14 @@ class SearchActivity : AppCompatActivity() {
         placeholderNetworkError = findViewById(R.id.placeholderNetworkError)
         placeholderNotFound = findViewById(R.id.placeholderNotFound)
         inputEditText = findViewById(R.id.editText)
+        progressBar = findViewById(R.id.progressBar)
 
 
         adapter.tracks = tracks
 
-        adapter.onItemClick = { track -> clicking(track) }
+        adapter.onItemClick = { track -> onTrackClicked(track) }
 
-        historyAdapter.onItemClick = { track -> clicking(track) }
+        historyAdapter.onItemClick = { track -> onTrackClicked(track) }
 
         tracksList.adapter = adapter
         tracksList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -96,7 +105,7 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        updateButton.setOnClickListener { search(lastTrack) }
+        updateButton.setOnClickListener { searchRequest(lastTrack) }
 
 
         clearHistory.setOnClickListener {
@@ -108,7 +117,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (inputEditText.text.isNotEmpty()) {
-                    search(inputEditText.text.toString())
+                    searchRequest(inputEditText.text.toString())
                 }
                 val inputMethodManager =
                     getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -131,8 +140,10 @@ class SearchActivity : AppCompatActivity() {
             beforeTextChanged = {_, _, _, _ -> },
             onTextChanged = {charSequence, _, _, _ ->
                 clearButton.isVisible = !charSequence.isNullOrEmpty()
-                searchHistoryLayout.isVisible = charSequence.isNullOrEmpty() && inputEditText.hasFocus() && searchHistory.getSearchHistory().isNotEmpty()},
-            afterTextChanged = {_ -> inputText = inputEditText.text.toString()}
+                searchHistoryLayout.isVisible = charSequence.isNullOrEmpty() && inputEditText.hasFocus() && searchHistory.getSearchHistory().isNotEmpty()
+                searchDebounce()},
+            afterTextChanged = {_ ->
+                inputText = inputEditText.text.toString() }
         )
     }
 
@@ -155,18 +166,20 @@ class SearchActivity : AppCompatActivity() {
         placeholderNotFound.isVisible = false
     }
 
-    private fun search(track: String) {
+    private fun searchRequest(track: String) {
+        placeholderNetworkError.isVisible = false
+        updateButton.isVisible = false
+        placeholderNotFound.isVisible = false
+        progressBar.isVisible = true
         iTunsService.getTracks(track)
             .enqueue(object : Callback<TracksResponse> {
                 override fun onResponse(
                     call: Call<TracksResponse>,
                     response: Response<TracksResponse>
                 ) {
+                    progressBar.isVisible = false
                     when (response.code()) {
                         200 -> {
-                            placeholderNetworkError.isVisible = false
-                            updateButton.isVisible = false
-                            placeholderNotFound.isVisible = false
                             if (response.body()?.tracks?.isNotEmpty() == true) {
                                 tracks.clear()
                                 tracks.addAll(response.body()?.tracks!!)
@@ -188,6 +201,7 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                    progressBar.isVisible = false
                     lastTrack = track
                     showMessage()
                 }
@@ -208,21 +222,43 @@ class SearchActivity : AppCompatActivity() {
             searchHistoryLayout.isVisible = false
         }
     }
-    private fun clicking(track: Track){
-        searchHistory.saveTrack(track)
-        historyAdapter.tracks = searchHistory.getSearchHistory() as ArrayList<Track>
-        historyAdapter.notifyDataSetChanged()
+    private fun onTrackClicked(track: Track) {
 
-        val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
-        val gson = Gson()
-        val trackJson = gson.toJson(track)
-        audioPlayerIntent.putExtra("trackJson", trackJson)
-        startActivity(audioPlayerIntent)
+        if (clickDebounce()) {
+            searchHistory.saveTrack(track)
+            historyAdapter.tracks = searchHistory.getSearchHistory() as ArrayList<Track>
+            historyAdapter.notifyDataSetChanged()
+
+            val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
+            audioPlayerIntent.putExtra(KEY_TRACK_JSON, Gson().toJson(track))
+            startActivity(audioPlayerIntent)
+        }
     }
 
-    companion object {
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+    private fun searchDebounce() {
+        tracksList.isVisible = false
+        updateButton.isVisible = false
+        placeholderNetworkError.isVisible = false
+        placeholderNotFound.isVisible = false
+        handler.removeCallbacks(searchRunnable)
+        if (inputEditText.text.isNotEmpty()) {
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        }
+        }
+        companion object {
+        const val KEY_TRACK_JSON = "trackJson"
         const val KEY_SEARCH_TEXT = "KEY_SEARCH_TEXT"
         const val TEXT_DEF = ""
         private const val SEARCH_HISTORY_KEY = "search_history"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
