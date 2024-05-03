@@ -24,6 +24,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     private var mediaPlayer = MediaPlayer()
     private var playerState = STATE_DEFAULT
     private val handler = Handler(Looper.getMainLooper())
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +88,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         updateProgressRunnable = object : Runnable {
             override fun run() {
                 if (mediaPlayer.isPlaying) {
-                    playerTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+                    playerTime.text = dateFormat.format(mediaPlayer.currentPosition)
                     handler.postDelayed(this, UPDATE_TIME)
                 }
             }

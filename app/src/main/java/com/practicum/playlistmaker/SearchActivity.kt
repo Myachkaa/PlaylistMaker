@@ -148,6 +148,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private var searchText: String = TEXT_DEF
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(searchRunnable)
+    }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(KEY_SEARCH_TEXT, searchText)
