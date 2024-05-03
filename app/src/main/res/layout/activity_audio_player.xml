@@ -96,6 +96,7 @@
             app:layout_constraintTop_toTopOf="@+id/playerAddToLibrary"
             app:srcCompat="@drawable/play_button" />
 
+
         <TextView
             android:id="@+id/playerTime"
             style="@style/TextStyle14"

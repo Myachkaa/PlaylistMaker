@@ -24,5 +24,5 @@
     <string name="country">Страна</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
     <string name="add_to_favourites">Добавить в избранное</string>
-    <string name="player_time">0:00</string>
+    <string name="player_time">00:00</string>
 </resources>
