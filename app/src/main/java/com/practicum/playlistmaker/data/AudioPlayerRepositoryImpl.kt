@@ -1,13 +1,13 @@
 package com.practicum.playlistmaker.data
 
-import android.media.MediaPlayer
 import com.google.gson.Gson
+import com.practicum.playlistmaker.Creator
 import com.practicum.playlistmaker.domain.api.AudioPlayerRepository
 import com.practicum.playlistmaker.domain.models.Track
 
 class AudioPlayerRepositoryImpl: AudioPlayerRepository {
 
-    private val mediaPlayer = MediaPlayer()
+    private val mediaPlayer = Creator.getMediaPlayer()
     private var playerState = STATE_DEFAULT
     override fun getTrackFromJson(trackJsonString: String?): Track {
        return Gson().fromJson(trackJsonString, Track::class.java)
