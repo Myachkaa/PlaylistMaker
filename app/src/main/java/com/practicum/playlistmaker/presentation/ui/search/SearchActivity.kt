@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.presentation.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -19,22 +20,16 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.practicum.playlistmaker.Creator
+import com.practicum.playlistmaker.presentation.ui.audioplayer.AudioPlayerActivity
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.data.dto.SearchHistory
+import com.practicum.playlistmaker.domain.api.TrackInteractor
+import com.practicum.playlistmaker.domain.models.Track
 
 class SearchActivity : AppCompatActivity() {
 
-    private val iTunsBaseUrl = "https://itunes.apple.com"
     private var inputText: String = ""
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(iTunsBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val iTunsService = retrofit.create(ITunsApi::class.java)
     private val tracks = ArrayList<Track>()
     private val adapter = TrackAdapter()
 
@@ -52,6 +47,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyAdapter: TrackAdapter
     private lateinit var searchHistoryLayout: LinearLayout
     private lateinit var progressBar: ProgressBar
+    private val trackInteractor = Creator.provideTrackInteractor()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -164,6 +160,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showMessage() {
+        Log.d("SearchActivity", "showMessage called")
         tracks.clear()
         adapter.notifyDataSetChanged()
         placeholderNetworkError.isVisible = true
@@ -172,45 +169,30 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchRequest(track: String) {
+        Log.d("SearchActivity", "searchRequest started for track: $track")
         placeholderNetworkError.isVisible = false
         updateButton.isVisible = false
         placeholderNotFound.isVisible = false
         progressBar.isVisible = true
-        iTunsService.getTracks(track)
-            .enqueue(object : Callback<TracksResponse> {
-                override fun onResponse(
-                    call: Call<TracksResponse>,
-                    response: Response<TracksResponse>
-                ) {
+        trackInteractor.searchTrack(track, object : TrackInteractor.TrackConsumer {
+            override fun consume(foundTracks: List<Track>) {
+                handler.post {
+                    Log.d("SearchActivity", "consume called with ${foundTracks.size} tracks")
                     progressBar.isVisible = false
-                    when (response.code()) {
-                        200 -> {
-                            if (response.body()?.tracks?.isNotEmpty() == true) {
-                                tracks.clear()
-                                tracks.addAll(response.body()?.tracks!!)
-                                tracksList.isVisible = true
-                                adapter.notifyDataSetChanged()
-                            } else {
-                                tracks.clear()
-                                adapter.notifyDataSetChanged()
-                                tracksList.isVisible = false
-                                placeholderNotFound.isVisible = true
-                            }
-                        }
+                    if (foundTracks.isEmpty()) {
+                        placeholderNotFound.isVisible = true }
 
-                        else -> {
-                            lastTrack = track
-                            showMessage()
-                        }
+                    else {
+                        Log.d("SearchActivity", "No tracks found")
+                        tracks.clear()
+                        tracks.addAll(foundTracks)
+                        adapter.tracks = tracks
+                        adapter.notifyDataSetChanged()
+                        tracksList.isVisible = true
                     }
                 }
-
-                override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
-                    progressBar.isVisible = false
-                    lastTrack = track
-                    showMessage()
-                }
-            })
+            }
+        })
     }
 
     private fun historyVisibility(){
@@ -258,6 +240,7 @@ class SearchActivity : AppCompatActivity() {
             handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
         }
         }
+
         companion object {
         const val KEY_TRACK_JSON = "trackJson"
         const val KEY_SEARCH_TEXT = "KEY_SEARCH_TEXT"
@@ -267,3 +250,39 @@ class SearchActivity : AppCompatActivity() {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
+
+//        iTunsService.getTracks(track)
+//            .enqueue(object : Callback<TracksResponse> {
+//                override fun onResponse(
+//                    call: Call<TracksResponse>,
+//                    response: Response<TracksResponse>
+//                ) {
+//                    progressBar.isVisible = false
+//                    when (response.code()) {
+//                        200 -> {
+//                            if (response.body()?.tracks?.isNotEmpty() == true) {
+//                                tracks.clear()
+//                                tracks.addAll(trackDtoToTrack(response.body()?.tracks!!))
+//                                tracksList.isVisible = true
+//                                adapter.notifyDataSetChanged()
+//                            } else {
+//                                tracks.clear()
+//                                adapter.notifyDataSetChanged()
+//                                tracksList.isVisible = false
+//                                placeholderNotFound.isVisible = true
+//                            }
+//                        }
+//
+//                        else -> {
+//                            lastTrack = track
+//                            showMessage()
+//                        }
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+//                    progressBar.isVisible = false
+//                    lastTrack = track
+//                    showMessage()
+//                }
+//            })
