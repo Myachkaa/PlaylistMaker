@@ -27,11 +27,12 @@ class App : Application() {
             }
         )
     }
+
     private fun saveThemeState(darkThemeEnabled: Boolean) {
         val sharedPrefs = getSharedPreferences(THEME_SWITCHER, MODE_PRIVATE)
         sharedPrefs.edit()
-        .putBoolean(SWITCHER_KEY, darkThemeEnabled)
-        .apply()
+            .putBoolean(SWITCHER_KEY, darkThemeEnabled)
+            .apply()
     }
 
 
