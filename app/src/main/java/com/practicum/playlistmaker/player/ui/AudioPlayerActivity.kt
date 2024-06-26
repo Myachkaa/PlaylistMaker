@@ -12,14 +12,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.practicum.playlistmaker.player.ui.view_model.AudioPlayerViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityAudioPlayerBinding
     private lateinit var playButton: ImageView
-    private lateinit var url: String
     private lateinit var updateProgressRunnable: Runnable
     private lateinit var playerTime: TextView
     private lateinit var viewModel: AudioPlayerViewModel
@@ -28,30 +29,33 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_audio_player)
+
+        binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         viewModel = ViewModelProvider(
             this,
             AudioPlayerViewModel.getViewModelFactory()
         )[AudioPlayerViewModel::class.java]
         val trackJsonString = intent.getStringExtra(KEY_TRACK_JSON)
+
         viewModel.setTrack(trackJsonString)
 
-        url = viewModel.pState.value?.track?.previewUrl!!
+        val url = viewModel.pState.value?.track?.previewUrl
 
-        val playerTrackArtwork = findViewById<ImageView>(R.id.playerTrackArtwork)
-        val playerTrackName = findViewById<TextView>(R.id.playerTrackName)
-        val playerArtistName = findViewById<TextView>(R.id.playerArtistName)
-        val playerCollectionName = findViewById<TextView>(R.id.playerCollectionNameValue)
-        val playerReleaseDate = findViewById<TextView>(R.id.playerReleaseDateValue)
-        val playerPrimaryGenreName = findViewById<TextView>(R.id.playerPrimaryGenreNameValue)
-        val playerCountry = findViewById<TextView>(R.id.playerCountryValue)
-        val playerTrackTime = findViewById<TextView>(R.id.playerTrackTimeValue)
-        val collectionNameTextView = findViewById<TextView>(R.id.playerCollectionName)
-        val backButton = findViewById<ImageView>(R.id.playerBackArrow)
-        playerTime = findViewById(R.id.playerTime)
+        val playerTrackArtwork = binding.playerTrackArtwork
+        val playerTrackName = binding.playerTrackName
+        val playerArtistName = binding.playerArtistName
+        val playerCollectionName = binding.playerCollectionNameValue
+        val playerReleaseDate = binding.playerReleaseDateValue
+        val playerPrimaryGenreName = binding.playerPrimaryGenreNameValue
+        val playerCountry = binding.playerCountryValue
+        val playerTrackTime = binding.playerTrackTimeValue
+        val collectionNameTextView = binding.playerCollectionNameValue
+        val backButton = binding.playerBackArrow
+        playerTime = binding.playerTime
 
-        playButton = findViewById(R.id.playButton)
+        playButton = binding.playButton
 
         viewModel.pState.observe(this) { state ->
             val track = state.track
@@ -59,14 +63,14 @@ class AudioPlayerActivity : AppCompatActivity() {
             if (track != null) {
                 playerTrackName.text = track.trackName
                 playerArtistName.text = track.artistName
-                playerReleaseDate.text = track.releaseDate!!.substring(0, 4)
+                playerReleaseDate.text = track.releaseDate.substring(0, 4)
                 playerPrimaryGenreName.text = track.primaryGenreName
                 playerCountry.text = track.country
                 playerTrackTime.text =
                     SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime)
 
                 Glide.with(this)
-                    .load(track.artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg"))
+                    .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
                     .placeholder(R.drawable.placeholder)
                     .centerCrop()
                     .transform(

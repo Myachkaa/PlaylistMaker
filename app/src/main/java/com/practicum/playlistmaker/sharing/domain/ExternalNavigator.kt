@@ -6,5 +6,10 @@ interface ExternalNavigator {
     fun shareLink(link: String, share: String)
     fun openLink(url: String)
     fun openEmail(emailData: EmailData)
-    fun getString(resId: Int): String
+    fun getSupportEmail(): String
+    fun getSupportSubject(): String
+    fun getSupportMessage(): String
+    fun getShareAppLink(): String
+    fun getShareAppText(): String
+    fun getTermsLink(): String
 }

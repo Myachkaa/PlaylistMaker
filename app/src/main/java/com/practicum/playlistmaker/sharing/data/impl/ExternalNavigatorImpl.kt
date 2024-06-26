@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.sharing.data.impl
 import android.app.Application
 import android.content.Intent
 import android.net.Uri
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.sharing.domain.ExternalNavigator
 import com.practicum.playlistmaker.sharing.domain.model.EmailData
 
@@ -36,7 +37,31 @@ class ExternalNavigatorImpl(private val application: Application) : ExternalNavi
         application.startActivity(emailIntent)
     }
 
-    override fun getString(resId: Int): String {
+    private fun getString(resId: Int): String {
         return application.getString(resId)
+    }
+
+    override fun getSupportEmail(): String {
+        return getString(R.string.support_mail)
+    }
+
+    override fun getSupportSubject(): String {
+        return getString(R.string.subject_mail)
+    }
+
+    override fun getSupportMessage(): String {
+        return getString(R.string.message)
+    }
+
+    override fun getShareAppLink(): String {
+        return getString(R.string.share_link)
+    }
+
+    override fun getShareAppText(): String {
+        return getString(R.string.share)
+    }
+
+    override fun getTermsLink(): String {
+        return getString(R.string.agreement_link)
     }
 }

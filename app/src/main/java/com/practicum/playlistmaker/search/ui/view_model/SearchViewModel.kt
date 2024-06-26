@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.practicum.playlistmaker.search.domain.api.TrackInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.util.Creator
 import com.practicum.playlistmaker.util.SearchResult
@@ -34,36 +33,35 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     fun searchRequest(track: String) {
         stateLiveData.postValue(SearchState.Loading)
-        trackInteractor.searchTrack(track, object : TrackInteractor.TrackConsumer {
-            override fun consume(foundTrack: SearchResult<List<Track>>) {
-                handler.post {
-                    when (foundTrack) {
-                        is SearchResult.Success -> {
-                            val tracksResult = foundTrack.data ?: emptyList()
-                            if (tracksResult.isEmpty()) {
-                                stateLiveData.postValue(SearchState.NotFound)
-                            } else {
-                                tracks.clear()
-                                tracks.addAll(tracksResult)
-                                stateLiveData.postValue(SearchState.TrackList(tracks))
-                            }
+        trackInteractor.searchTrack(track) { foundTrack ->
+            handler.post {
+                when (foundTrack) {
+                    is SearchResult.Success -> {
+                        val tracksResult = foundTrack.data ?: emptyList()
+                        if (tracksResult.isEmpty()) {
+                            stateLiveData.postValue(SearchState.NotFound)
+                        } else {
+                            tracks.clear()
+                            tracks.addAll(tracksResult)
+                            stateLiveData.postValue(SearchState.TrackList(tracks))
                         }
+                    }
 
-                        is SearchResult.Error -> {
-                            when (foundTrack.code) {
-                                -1 -> {
-                                    stateLiveData.postValue(SearchState.ServerError)
-                                    lastTrack = track
-                                }
-
-                                else -> stateLiveData.postValue(SearchState.NotFound)
+                    is SearchResult.Error -> {
+                        when (foundTrack.code) {
+                            -1 -> {
+                                stateLiveData.postValue(SearchState.ServerError)
+                                lastTrack = track
                             }
+
+                            else -> stateLiveData.postValue(SearchState.NotFound)
                         }
                     }
                 }
             }
-        })
+        }
     }
+
 
     fun retryLastSearch() {
         lastTrack?.let {

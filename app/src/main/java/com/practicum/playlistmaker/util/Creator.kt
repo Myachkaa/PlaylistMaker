@@ -15,6 +15,10 @@ import com.practicum.playlistmaker.player.domain.impl.AudioPlayerInteractorImpl
 import com.practicum.playlistmaker.search.data.impl.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.search.domain.api.SearchHistoryRepository
 import com.practicum.playlistmaker.search.domain.impl.TrackInteractorImpl
+import com.practicum.playlistmaker.settings.data.SettingsRepository
+import com.practicum.playlistmaker.settings.data.impl.SettingsRepositoryImpl
+import com.practicum.playlistmaker.settings.domain.SettingsInteractor
+import com.practicum.playlistmaker.settings.domain.impl.SettingsInteractorImpl
 import com.practicum.playlistmaker.sharing.data.impl.ExternalNavigatorImpl
 import com.practicum.playlistmaker.sharing.domain.ExternalNavigator
 import com.practicum.playlistmaker.sharing.domain.SharingInteractor
@@ -52,4 +56,13 @@ object Creator {
     fun provideSharingInteractor(application: Application): SharingInteractor {
         return SharingInteractorImpl(getExternalNavigator(application))
     }
+
+    private fun getSettingsRepository(application: Application): SettingsRepository {
+        return SettingsRepositoryImpl(application)
+    }
+
+    fun provideSettingsInteractor(application: Application): SettingsInteractor {
+        return SettingsInteractorImpl(getSettingsRepository(application))
+    }
+
 }

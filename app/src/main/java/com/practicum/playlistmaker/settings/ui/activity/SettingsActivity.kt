@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Switch
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.settings.domain.model.ThemeSettings
 import com.practicum.playlistmaker.settings.ui.view_model.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
@@ -31,11 +31,10 @@ class SettingsActivity : AppCompatActivity() {
         val agreement = findViewById<FrameLayout>(R.id.agreement)
         val themeSwitcher = findViewById<Switch>(R.id.themeSwitcher)
 
-        themeSwitcher.isChecked =
-            AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+        themeSwitcher.isChecked = viewModel.getThemeSettings().isNightMode
 
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
-            (applicationContext as App).switchTheme(checked)
+            viewModel.updateThemeSetting(ThemeSettings(checked))
         }
 
         back.setOnClickListener { finish() }

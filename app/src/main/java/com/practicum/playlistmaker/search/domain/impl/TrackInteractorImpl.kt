@@ -4,6 +4,7 @@ import com.practicum.playlistmaker.search.domain.api.SearchHistoryRepository
 import com.practicum.playlistmaker.search.domain.api.TrackInteractor
 import com.practicum.playlistmaker.search.domain.api.TrackRepository
 import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.util.SearchResult
 import java.util.concurrent.Executors
 
 class TrackInteractorImpl(
@@ -12,9 +13,9 @@ class TrackInteractorImpl(
 ) : TrackInteractor {
 
     private val executor = Executors.newCachedThreadPool()
-    override fun searchTrack(expression: String, consumer: TrackInteractor.TrackConsumer) {
+    override fun searchTrack(expression: String, consumer: (SearchResult<List<Track>>) -> Unit) {
         executor.execute {
-            consumer.consume(trackRepository.searchTrack(expression))
+            consumer(trackRepository.searchTrack(expression))
         }
     }
 

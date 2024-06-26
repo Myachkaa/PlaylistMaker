@@ -26,13 +26,19 @@ class AudioPlayerViewModel(private val interactor: AudioPlayerInteractor) : View
         )
     }
 
-    fun preparePlayer(url: String) {
-        interactor.preparePlayer(url, {
-            playerState.value = playerState.value?.copy(isPrepared = true)
-        }, {
-            playerState.value =
-                playerState.value?.copy(isPlaying = false, isPrepared = true, currentPosition = 0)
-        })
+    fun preparePlayer(url: String?) {
+        if (url != null) {
+            interactor.preparePlayer(url, {
+                playerState.value = playerState.value?.copy(isPrepared = true)
+            }, {
+                playerState.value =
+                    playerState.value?.copy(
+                        isPlaying = false,
+                        isPrepared = true,
+                        currentPosition = 0
+                    )
+            })
+        }
     }
 
 
@@ -57,7 +63,7 @@ class AudioPlayerViewModel(private val interactor: AudioPlayerInteractor) : View
     }
 
     fun getCollectionNameVisibility(track: Track): Boolean {
-        return !(track.collectionName!!.isEmpty() || track.collectionName.contains("Single"))
+        return !(track.collectionName.isEmpty() || track.collectionName.contains("Single"))
     }
 
     companion object {

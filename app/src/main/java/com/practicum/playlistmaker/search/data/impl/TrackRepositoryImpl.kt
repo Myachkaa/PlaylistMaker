@@ -15,15 +15,15 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepos
             200 -> {
                 SearchResult.Success((response as TracksResponse).tracks.map {
                     Track(
-                        it.trackName,
-                        it.artistName,
-                        it.trackTime,
-                        it.artworkUrl100,
-                        it.collectionName,
-                        it.releaseDate,
-                        it.primaryGenreName,
-                        it.country,
-                        it.previewUrl
+                        it.trackName ?: "",
+                        it.artistName ?: "",
+                        it.trackTime ?: 0L,
+                        it.artworkUrl100 ?: "",
+                        it.collectionName ?: "",
+                        it.releaseDate ?: "",
+                        it.primaryGenreName ?: "",
+                        it.country ?: "",
+                        it.previewUrl ?: ""
                     )
                 })
             }
