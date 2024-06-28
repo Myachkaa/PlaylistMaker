@@ -16,7 +16,7 @@ class AudioPlayerInteractorImpl(private val audioPlayer: AudioPlayerRepository) 
     }
 
     override fun preparePlayer(
-        url: String,
+        url: String?,
         onPrepared: () -> Unit,
         onCompletion: () -> Unit,
     ) {

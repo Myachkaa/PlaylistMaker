@@ -7,11 +7,10 @@ interface AudioPlayerRepository {
     fun getTrackFromJson(trackJsonString: String?): Track
     fun currentPosition(): Int
     fun preparePlayer(
-        url: String,
+        url: String?,
         onPrepared: () -> Unit,
         onCompletion: () -> Unit
     )
-
     fun startPlayer()
     fun pausePlayer()
     fun playbackControl(): Boolean

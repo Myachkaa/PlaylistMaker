@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.player.ui.view_model
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +10,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
-import com.practicum.playlistmaker.util.Creator
 
 
 class AudioPlayerViewModel(private val interactor: AudioPlayerInteractor) : ViewModel() {
@@ -65,14 +66,7 @@ class AudioPlayerViewModel(private val interactor: AudioPlayerInteractor) : View
     fun getCollectionNameVisibility(track: Track): Boolean {
         return !(track.collectionName.isEmpty() || track.collectionName.contains("Single"))
     }
-
     companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                AudioPlayerViewModel(
-                    Creator.provideAudioPlayerInteractor()
-                )
-            }
-        }
+        private const val TAG = "AudioPlayerViewModel"
     }
 }

@@ -14,16 +14,18 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.practicum.playlistmaker.player.ui.view_model.AudioPlayerViewModel
+import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerActivity : AppCompatActivity() {
 
+    private val viewModel by viewModel<AudioPlayerViewModel>()
     private lateinit var binding: ActivityAudioPlayerBinding
     private lateinit var playButton: ImageView
     private lateinit var updateProgressRunnable: Runnable
     private lateinit var playerTime: TextView
-    private lateinit var viewModel: AudioPlayerViewModel
     private val handler = Handler(Looper.getMainLooper())
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
@@ -33,10 +35,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(
-            this,
-            AudioPlayerViewModel.getViewModelFactory()
-        )[AudioPlayerViewModel::class.java]
         val trackJsonString = intent.getStringExtra(KEY_TRACK_JSON)
 
         viewModel.setTrack(trackJsonString)
@@ -127,7 +125,6 @@ class AudioPlayerActivity : AppCompatActivity() {
     private fun playbackControl() {
         viewModel.playbackControl()
     }
-
     companion object {
         private const val KEY_TRACK_JSON = "trackJson"
         private const val UPDATE_TIME = 500L

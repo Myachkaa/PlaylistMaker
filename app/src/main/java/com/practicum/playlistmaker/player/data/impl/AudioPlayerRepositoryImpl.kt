@@ -1,14 +1,17 @@
 package com.practicum.playlistmaker.player.data.impl
 
+import android.media.MediaPlayer
+import android.util.Log
 import com.google.gson.Gson
-import com.practicum.playlistmaker.util.Creator
+
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerRepository
 import com.practicum.playlistmaker.player.domain.models.AudioPlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
+import java.io.IOException
 
-class AudioPlayerRepositoryImpl : AudioPlayerRepository {
+class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : AudioPlayerRepository {
 
-    private val mediaPlayer = Creator.getMediaPlayer()
+
     private var playerState = AudioPlayerState.DEFAULT
     override fun getTrackFromJson(trackJsonString: String?): Track {
         return Gson().fromJson(trackJsonString, Track::class.java)
@@ -24,7 +27,7 @@ class AudioPlayerRepositoryImpl : AudioPlayerRepository {
     }
 
     override fun preparePlayer(
-        url: String,
+        url: String?,
         onPrepared: () -> Unit,
         onCompletion: () -> Unit
     ) {

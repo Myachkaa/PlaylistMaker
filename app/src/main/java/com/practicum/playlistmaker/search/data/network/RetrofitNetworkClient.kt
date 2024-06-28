@@ -8,16 +8,9 @@ import com.practicum.playlistmaker.search.data.dto.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitNetworkClient(private val context: Context) : NetworkClient {
+class RetrofitNetworkClient( private val iTunsApi: ITunsApi,
+    private val context: Context) : NetworkClient {
 
-    private val imdbBaseUrl = "https://itunes.apple.com"
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(imdbBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val imdbService = retrofit.create(ITunsApi::class.java)
 
     private fun isConnected(): Boolean {
         val connectivityManager = context.getSystemService(
@@ -41,7 +34,7 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
             return Response().apply { resultCode = -1 }
         }
         return if (dto is TrackSearchRequest) {
-            val resp = imdbService.getTracks(dto.expression).execute()
+            val resp = iTunsApi.getTracks(dto.expression).execute()
 
             val body = resp.body() ?: Response()
 

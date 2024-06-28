@@ -1,26 +1,29 @@
 package com.practicum.playlistmaker.search.ui.view_model
 
 import android.app.Application
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.google.gson.Gson
+import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
+import com.practicum.playlistmaker.search.domain.api.TrackInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
-import com.practicum.playlistmaker.util.Creator
+import com.practicum.playlistmaker.search.ui.activity.SearchActivity
+
 import com.practicum.playlistmaker.util.SearchResult
 
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
-    private val trackInteractor = Creator.provideTrackInteractor(
-        getApplication(), application.getSharedPreferences(
-            SEARCH_HISTORY_KEY, MODE_PRIVATE
-        )
-    )
+class SearchViewModel(private val trackInteractor: TrackInteractor) : ViewModel() {
+
     private var isClickAllowed = true
     private val tracks = ArrayList<Track>()
     var searchText: String = TEXT_DEF
@@ -62,6 +65,9 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun toJson(track: Track): String {
+        return trackInteractor.toJson(track)
+    }
 
     fun retryLastSearch() {
         lastTrack?.let {
@@ -112,14 +118,8 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     companion object {
         const val TEXT_DEF = ""
-        const val SEARCH_HISTORY_KEY = "search_history"
         const val CLICK_DEBOUNCE_DELAY = 1000L
         const val SEARCH_DEBOUNCE_DELAY = 2000L
 
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(this[APPLICATION_KEY] as Application)
-            }
-        }
     }
 }

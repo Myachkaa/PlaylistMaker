@@ -17,17 +17,17 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.view_model.SearchState
 import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel by viewModel<SearchViewModel>()
     private var inputText: String = TEXT_DEF
     private val adapter = TrackAdapter()
 
@@ -50,10 +50,6 @@ class SearchActivity : AppCompatActivity() {
         val clearHistory = findViewById<Button>(R.id.clearHistory)
         val recyclerViewHistory = findViewById<RecyclerView>(R.id.recyclerViewHistory)
 
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
         viewModel.observeState().observe(this) {
             setState(it)
         }
@@ -217,7 +213,7 @@ class SearchActivity : AppCompatActivity() {
             historyAdapter.notifyDataSetChanged()
 
             val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
-            audioPlayerIntent.putExtra(KEY_TRACK_JSON, Gson().toJson(track))
+            audioPlayerIntent.putExtra(KEY_TRACK_JSON, viewModel.toJson(track))
             startActivity(audioPlayerIntent)
         }
     }
