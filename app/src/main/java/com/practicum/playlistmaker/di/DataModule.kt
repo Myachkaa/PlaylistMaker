@@ -4,10 +4,8 @@ import android.content.Context
 import android.media.MediaPlayer
 import com.google.gson.Gson
 import com.practicum.playlistmaker.search.data.NetworkClient
-import com.practicum.playlistmaker.search.data.impl.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.search.data.network.ITunsApi
 import com.practicum.playlistmaker.search.data.network.RetrofitNetworkClient
-import com.practicum.playlistmaker.search.domain.api.SearchHistoryRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -31,15 +29,11 @@ val dataModule = module {
 
     factory { Gson() }
 
-    single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(get(), get())
-    }
-
     single<NetworkClient> {
         RetrofitNetworkClient(get(), androidContext())
     }
 
-    single<MediaPlayer> {
+    factory<MediaPlayer> {
         MediaPlayer()
     }
 

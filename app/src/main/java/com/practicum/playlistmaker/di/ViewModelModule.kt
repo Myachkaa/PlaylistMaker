@@ -8,10 +8,10 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
 
-    viewModel {
+    viewModel<SearchViewModel> {
         SearchViewModel(get())
     }
-    viewModel {
+    viewModel<AudioPlayerViewModel> {
         AudioPlayerViewModel(get())
     }
 

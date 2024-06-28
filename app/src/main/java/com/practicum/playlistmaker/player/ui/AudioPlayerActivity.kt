@@ -8,20 +8,18 @@ import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.practicum.playlistmaker.player.ui.view_model.AudioPlayerViewModel
-import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerActivity : AppCompatActivity() {
 
-    private val viewModel by viewModel<AudioPlayerViewModel>()
+    private val viewModel: AudioPlayerViewModel by viewModel()
     private lateinit var binding: ActivityAudioPlayerBinding
     private lateinit var playButton: ImageView
     private lateinit var updateProgressRunnable: Runnable
@@ -49,7 +47,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         val playerPrimaryGenreName = binding.playerPrimaryGenreNameValue
         val playerCountry = binding.playerCountryValue
         val playerTrackTime = binding.playerTrackTimeValue
-        val collectionNameTextView = binding.playerCollectionNameValue
+        val collectionNameTextView = binding.playerCollectionName
         val backButton = binding.playerBackArrow
         playerTime = binding.playerTime
 
@@ -125,6 +123,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     private fun playbackControl() {
         viewModel.playbackControl()
     }
+
     companion object {
         private const val KEY_TRACK_JSON = "trackJson"
         private const val UPDATE_TIME = 500L

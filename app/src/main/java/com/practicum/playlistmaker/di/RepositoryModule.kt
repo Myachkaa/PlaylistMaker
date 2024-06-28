@@ -18,13 +18,14 @@ val repositoryModule = module {
         TrackRepositoryImpl(get(), get())
     }
 
+    factory<AudioPlayerRepository> {
+        AudioPlayerRepositoryImpl(get())
+    }
+
     single<SearchHistoryRepository> {
         SearchHistoryRepositoryImpl(get(), get())
     }
 
-    single<AudioPlayerRepository> {
-        AudioPlayerRepositoryImpl(get())
-    }
     single<SettingsRepository> {
         SettingsRepositoryImpl(get())
     }

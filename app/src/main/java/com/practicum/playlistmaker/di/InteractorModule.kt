@@ -16,7 +16,7 @@ val interactorModule = module {
         TrackInteractorImpl(get(), get())
     }
 
-    single<AudioPlayerInteractor> {
+    factory<AudioPlayerInteractor> {
         AudioPlayerInteractorImpl(get())
     }
 

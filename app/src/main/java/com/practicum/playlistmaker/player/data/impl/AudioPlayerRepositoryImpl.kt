@@ -7,7 +7,6 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerRepository
 import com.practicum.playlistmaker.player.domain.models.AudioPlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
-import java.io.IOException
 
 class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : AudioPlayerRepository {
 
@@ -35,13 +34,13 @@ class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : AudioPla
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
             playerState = AudioPlayerState.PREPARED
+            Log.d("AudioPlayerRepository", "MediaPlayer is prepared")
             onPrepared()
         }
         mediaPlayer.setOnCompletionListener {
             playerState = AudioPlayerState.PREPARED
             onCompletion()
         }
-
     }
 
     override fun startPlayer() {

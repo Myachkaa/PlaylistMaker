@@ -5,11 +5,11 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.practicum.playlistmaker.search.data.NetworkClient
 import com.practicum.playlistmaker.search.data.dto.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitNetworkClient( private val iTunsApi: ITunsApi,
-    private val context: Context) : NetworkClient {
+class RetrofitNetworkClient(
+    private val iTunsApi: ITunsApi,
+    private val context: Context
+) : NetworkClient {
 
 
     private fun isConnected(): Boolean {

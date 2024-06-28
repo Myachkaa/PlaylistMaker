@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.sharing.data.impl
 
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
