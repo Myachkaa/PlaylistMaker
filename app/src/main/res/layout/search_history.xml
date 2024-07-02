@@ -27,15 +27,8 @@
 
     <Button
         android:id="@+id/clearHistory"
-        style="@style/TextStyle14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        style="@style/FunctionalButton"
         android:layout_marginTop="@dimen/padding_24"
-        android:backgroundTint="?attr/colorOnPrimary"
-        android:text="@string/clear_history"
-        android:textAllCaps="false"
-        android:textColor="?attr/colorSecondary"
-        app:cornerRadius="@dimen/padding_54" />
+        android:text="@string/clear_history" />
 
 </LinearLayout>

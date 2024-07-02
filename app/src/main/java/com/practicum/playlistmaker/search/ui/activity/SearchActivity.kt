@@ -16,7 +16,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
+import com.practicum.playlistmaker.player.ui.activity.AudioPlayerActivity
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.view_model.SearchState

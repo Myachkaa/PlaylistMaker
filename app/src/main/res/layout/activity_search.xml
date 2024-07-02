@@ -77,8 +77,7 @@
             android:id="@+id/placeholderNotFound"
             style="@style/PlaceholderStyle"
             android:drawableTop="@drawable/not_found"
-            android:text="@string/not_found"
-            android:visibility="gone" />
+            android:text="@string/not_found" />
 
         <TextView
             android:id="@+id/placeholderNetworkError"
@@ -86,22 +85,14 @@
             android:layout_marginStart="@dimen/padding_24"
             android:layout_marginEnd="@dimen/padding_24"
             android:drawableTop="@drawable/network_error"
-            android:text="@string/network_error"
-            android:visibility="gone" />
+            android:text="@string/network_error" />
 
         <Button
             android:id="@+id/updateButton"
-            style="@style/TextStyle14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            style="@style/FunctionalButton"
             android:layout_marginTop="@dimen/padding_348"
-            android:backgroundTint="?attr/colorOnPrimary"
             android:text="@string/update"
-            android:textAllCaps="false"
-            android:textColor="?attr/colorSecondary"
-            android:visibility="gone"
-            app:cornerRadius="@dimen/padding_54" />
+            android:visibility="gone" />
 
         <include layout="@layout/search_history" />
 
