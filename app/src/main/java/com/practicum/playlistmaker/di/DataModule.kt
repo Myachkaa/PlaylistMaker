@@ -12,11 +12,15 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+private const val BASEURL = "https://itunes.apple.com"
+private const val SEARCH_HISTORY = "search_history"
+private const val THEME_PREFS = "practicum_playlistmaker_theme_switcher"
+
 val dataModule = module {
 
     single<ITunsApi> {
         Retrofit.Builder()
-            .baseUrl("https://itunes.apple.com")
+            .baseUrl(BASEURL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ITunsApi::class.java)
@@ -24,7 +28,7 @@ val dataModule = module {
 
     single {
         androidContext()
-            .getSharedPreferences("search_history", Context.MODE_PRIVATE)
+            .getSharedPreferences(SEARCH_HISTORY, Context.MODE_PRIVATE)
     }
 
     factory { Gson() }
@@ -39,7 +43,7 @@ val dataModule = module {
 
     single(named("Theme_prefs")) {
         androidContext().getSharedPreferences(
-            "practicum_playlistmaker_theme_switcher",
+            THEME_PREFS,
             Context.MODE_PRIVATE
         )
     }
