@@ -8,22 +8,22 @@ import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.practicum.playlistmaker.player.ui.view_model.AudioPlayerViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerActivity : AppCompatActivity() {
 
+    private val viewModel: AudioPlayerViewModel by viewModel()
     private lateinit var binding: ActivityAudioPlayerBinding
     private lateinit var playButton: ImageView
     private lateinit var updateProgressRunnable: Runnable
     private lateinit var playerTime: TextView
-    private lateinit var viewModel: AudioPlayerViewModel
     private val handler = Handler(Looper.getMainLooper())
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
@@ -33,10 +33,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(
-            this,
-            AudioPlayerViewModel.getViewModelFactory()
-        )[AudioPlayerViewModel::class.java]
         val trackJsonString = intent.getStringExtra(KEY_TRACK_JSON)
 
         viewModel.setTrack(trackJsonString)
@@ -51,7 +47,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         val playerPrimaryGenreName = binding.playerPrimaryGenreNameValue
         val playerCountry = binding.playerCountryValue
         val playerTrackTime = binding.playerTrackTimeValue
-        val collectionNameTextView = binding.playerCollectionNameValue
+        val collectionNameTextView = binding.playerCollectionName
         val backButton = binding.playerBackArrow
         playerTime = binding.playerTime
 

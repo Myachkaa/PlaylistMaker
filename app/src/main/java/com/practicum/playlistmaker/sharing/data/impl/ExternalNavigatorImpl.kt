@@ -1,13 +1,13 @@
 package com.practicum.playlistmaker.sharing.data.impl
 
-import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.sharing.domain.ExternalNavigator
 import com.practicum.playlistmaker.sharing.domain.model.EmailData
 
-class ExternalNavigatorImpl(private val application: Application) : ExternalNavigator {
+class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
 
     override fun shareLink(link: String, share: String) {
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -18,13 +18,13 @@ class ExternalNavigatorImpl(private val application: Application) : ExternalNavi
         val chooserIntent = Intent.createChooser(shareIntent, share).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        application.startActivity(chooserIntent)
+        context.startActivity(chooserIntent)
     }
 
     override fun openLink(url: String) {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        application.startActivity(browserIntent)
+        context.startActivity(browserIntent)
     }
 
     override fun openEmail(emailData: EmailData) {
@@ -34,11 +34,11 @@ class ExternalNavigatorImpl(private val application: Application) : ExternalNavi
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailData.subject)
         emailIntent.putExtra(Intent.EXTRA_TEXT, emailData.message)
         emailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        application.startActivity(emailIntent)
+        context.startActivity(emailIntent)
     }
 
     private fun getString(resId: Int): String {
-        return application.getString(resId)
+        return context.getString(resId)
     }
 
     override fun getSupportEmail(): String {

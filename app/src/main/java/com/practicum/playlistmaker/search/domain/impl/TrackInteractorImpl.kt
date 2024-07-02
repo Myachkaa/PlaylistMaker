@@ -19,6 +19,11 @@ class TrackInteractorImpl(
         }
     }
 
+    override fun toJson(track: Track): String {
+        return trackRepository.toJson(track)
+    }
+
+
     override fun saveTrack(track: Track) {
         historyRepository.saveTrack(track)
     }

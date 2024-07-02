@@ -6,24 +6,18 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Switch
-import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.settings.domain.model.ThemeSettings
 import com.practicum.playlistmaker.settings.ui.view_model.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel by viewModel<SettingsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-
-        viewModel = ViewModelProvider(
-            this,
-            SettingsViewModel.getViewModelFactory(applicationContext as App)
-        ).get(SettingsViewModel::class.java)
 
         val back = findViewById<ImageView>(R.id.back)
         val share = findViewById<FrameLayout>(R.id.share)
@@ -34,7 +28,8 @@ class SettingsActivity : AppCompatActivity() {
         themeSwitcher.isChecked = viewModel.getThemeSettings().isNightMode
 
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
-            viewModel.updateThemeSetting(ThemeSettings(checked))
+            viewModel.updateThemeSetting(ThemeSettings(checked), checked)
+            viewModel.switchTheme(checked)
         }
 
         back.setOnClickListener { finish() }

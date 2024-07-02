@@ -12,7 +12,13 @@ class SettingsInteractorImpl(
         return settingsRepository.getThemeSettings()
     }
 
-    override fun updateThemeSetting(settings: ThemeSettings) {
-        settingsRepository.updateThemeSetting(settings)
+    override fun updateThemeSetting(settings: ThemeSettings, darkThemeEnabled: Boolean) {
+        settingsRepository.updateThemeSetting(settings, darkThemeEnabled)
     }
+
+    override fun switchTheme(darkThemeEnabled: Boolean) {
+        settingsRepository.switchTheme(darkThemeEnabled)
+    }
+
+
 }
