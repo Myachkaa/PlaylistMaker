@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.practicum.playlistmaker.player.ui.view_model.AudioPlayerViewModel
+import com.practicum.playlistmaker.search.domain.models.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -33,9 +34,9 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val trackJsonString = intent.getStringExtra(KEY_TRACK_JSON)
+        val track = intent.getParcelableExtra<Track>(KEY_TRACK)
 
-        viewModel.setTrack(trackJsonString)
+        viewModel.setTrack(track)
 
         val url = viewModel.pState.value?.track?.previewUrl
 
@@ -125,7 +126,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val KEY_TRACK_JSON = "trackJson"
+        private const val KEY_TRACK = "track"
         private const val UPDATE_TIME = 500L
     }
 }

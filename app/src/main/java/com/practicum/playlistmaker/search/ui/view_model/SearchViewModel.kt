@@ -54,10 +54,6 @@ class SearchViewModel(private val trackInteractor: TrackInteractor) : ViewModel(
         }
     }
 
-    fun toJson(track: Track): String {
-        return trackInteractor.toJson(track)
-    }
-
     fun retryLastSearch() {
         lastTrack?.let {
             searchRequest(it)

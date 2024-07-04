@@ -1,30 +1,24 @@
 package com.practicum.playlistmaker.search.ui.activity
 
 import android.util.TypedValue
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.databinding.TrackLayoutBinding
 import com.practicum.playlistmaker.search.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TracksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private var imageViewArtwork: ImageView = itemView.findViewById(R.id.imageViewArtwork)
-    private var textViewTrackName: TextView = itemView.findViewById(R.id.textViewTrackName)
-    private var textViewArtistName: TextView = itemView.findViewById(R.id.textViewArtistName)
-    private var textViewTrackTime: TextView = itemView.findViewById(R.id.textViewTrackTime)
-
+class TracksViewHolder(private val binding: TrackLayoutBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
     fun bind(track: Track) {
-        textViewTrackName.text = track.trackName
-        textViewArtistName.text = track.artistName
-        textViewTrackTime.text =
+        binding.textViewTrackName.text = track.trackName
+        binding.textViewArtistName.text = track.artistName
+        binding.textViewTrackTime.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime)
-        textViewArtistName.requestLayout()
+        binding.textViewArtistName.requestLayout()
 
         Glide.with(itemView)
             .load(track.artworkUrl100)
@@ -39,6 +33,6 @@ class TracksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     ).toInt()
                 )
             )
-            .into(imageViewArtwork)
+            .into(binding.imageViewArtwork)
     }
 }

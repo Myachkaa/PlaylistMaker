@@ -6,6 +6,4 @@ import com.practicum.playlistmaker.util.SearchResult
 
 interface TrackRepository {
     fun searchTrack(expression: String): SearchResult<List<Track>>
-
-    fun toJson(track: Track): String
 }
