@@ -1,9 +1,7 @@
 package com.practicum.playlistmaker.player.data.impl
 
 import android.media.MediaPlayer
-import android.util.Log
 import com.google.gson.Gson
-
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerRepository
 import com.practicum.playlistmaker.player.domain.models.AudioPlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -34,12 +32,12 @@ class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : AudioPla
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
             playerState = AudioPlayerState.PREPARED
-            Log.d("AudioPlayerRepository", "MediaPlayer is prepared")
             onPrepared()
         }
         mediaPlayer.setOnCompletionListener {
             playerState = AudioPlayerState.PREPARED
             onCompletion()
+            mediaPlayer.seekTo(0)
         }
     }
 
@@ -73,5 +71,4 @@ class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : AudioPla
         mediaPlayer.release()
         playerState = AudioPlayerState.DEFAULT
     }
-
 }
