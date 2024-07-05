@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.TypedValue
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -22,9 +20,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private val viewModel: AudioPlayerViewModel by viewModel()
     private lateinit var binding: ActivityAudioPlayerBinding
-    private lateinit var playButton: ImageView
     private lateinit var updateProgressRunnable: Runnable
-    private lateinit var playerTime: TextView
     private val handler = Handler(Looper.getMainLooper())
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
@@ -34,36 +30,22 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val track = intent.getParcelableExtra<Track>(KEY_TRACK)
+        val getTrack = intent.getParcelableExtra<Track>(KEY_TRACK)
 
-        viewModel.setTrack(track)
+        viewModel.setTrack(getTrack)
 
         val url = viewModel.pState.value?.track?.previewUrl
-
-        val playerTrackArtwork = binding.playerTrackArtwork
-        val playerTrackName = binding.playerTrackName
-        val playerArtistName = binding.playerArtistName
-        val playerCollectionName = binding.playerCollectionNameValue
-        val playerReleaseDate = binding.playerReleaseDateValue
-        val playerPrimaryGenreName = binding.playerPrimaryGenreNameValue
-        val playerCountry = binding.playerCountryValue
-        val playerTrackTime = binding.playerTrackTimeValue
-        val collectionNameTextView = binding.playerCollectionName
-        val backButton = binding.playerBackArrow
-        playerTime = binding.playerTime
-
-        playButton = binding.playButton
 
         viewModel.pState.observe(this) { state ->
             val track = state.track
 
             if (track != null) {
-                playerTrackName.text = track.trackName
-                playerArtistName.text = track.artistName
-                playerReleaseDate.text = track.releaseDate.substring(0, 4)
-                playerPrimaryGenreName.text = track.primaryGenreName
-                playerCountry.text = track.country
-                playerTrackTime.text =
+                binding.playerTrackName.text = track.trackName
+                binding.playerArtistName.text = track.artistName
+                binding.playerReleaseDateValue.text = track.releaseDate.substring(0, 4)
+                binding.playerPrimaryGenreNameValue.text = track.primaryGenreName
+                binding.playerCountryValue.text = track.country
+                binding.playerTrackTimeValue.text =
                     SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime)
 
                 Glide.with(this)
@@ -79,26 +61,26 @@ class AudioPlayerActivity : AppCompatActivity() {
                             ).toInt()
                         )
                     )
-                    .into(playerTrackArtwork)
+                    .into(binding.playerTrackArtwork)
 
                 val isCollectionNameVisible = viewModel.getCollectionNameVisibility(track)
-                playerCollectionName.isVisible = isCollectionNameVisible
-                collectionNameTextView.isVisible = isCollectionNameVisible
+                binding.playerCollectionName.isVisible = isCollectionNameVisible
+                binding.playerCollectionNameValue.isVisible = isCollectionNameVisible
 
                 if (isCollectionNameVisible) {
-                    playerCollectionName.text = track.collectionName
+                    binding.playerCollectionNameValue.text = track.collectionName
                 }
             }
-            playButton.isEnabled = state.isPrepared
-            playButton.setImageResource(if (state.isPlaying) R.drawable.pause_button else R.drawable.play_button)
-            playerTime.text = dateFormat.format(state.currentPosition)
+            binding.playButton.isEnabled = state.isPrepared
+            binding.playButton.setImageResource(if (state.isPlaying) R.drawable.pause_button else R.drawable.play_button)
+            binding.playerTime.text = dateFormat.format(state.currentPosition)
         }
 
         viewModel.preparePlayer(url)
 
-        backButton.setOnClickListener { finish() }
+        binding.playerBackArrow.setOnClickListener { finish() }
 
-        playButton.setOnClickListener { playbackControl() }
+        binding.playButton.setOnClickListener { playbackControl() }
 
 
         updateProgressRunnable = object : Runnable {
