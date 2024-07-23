@@ -4,60 +4,89 @@ package com.practicum.playlistmaker.player.ui.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
+import com.practicum.playlistmaker.player.domain.models.AudioPlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class AudioPlayerViewModel(private val interactor: AudioPlayerInteractor) : ViewModel() {
 
-    private val playerState = MutableLiveData<PlayerState>()
-    val pState: LiveData<PlayerState> get() = playerState
-
-    init {
-        playerState.value = PlayerState()
-    }
-
-    fun setTrack(track: Track?) {
-        playerState.value = playerState.value?.copy(track = track)
-    }
+    private val playerState = MutableLiveData<AudioPlayerState>(AudioPlayerState.Default())
+    val pState: LiveData<AudioPlayerState> get() = playerState
+    private var timerJob: Job? = null
 
     fun preparePlayer(url: String?) {
         if (url != null) {
-            interactor.preparePlayer(url, {
-                playerState.value = playerState.value?.copy(isPrepared = true)
-            }, {
-                playerState.value =
-                    playerState.value?.copy(
-                        isPlaying = false,
-                        isPrepared = true,
-                        currentPosition = 0
-                    )
-            })
+            viewModelScope.launch {
+                interactor.preparePlayer(url, {
+                    playerState.value = AudioPlayerState.Prepared()
+                }, {
+                    playerState.value = AudioPlayerState.Prepared()
+                })
+            }
+        }
+    }
+
+    private fun startPlayer() {
+        viewModelScope.launch {
+            interactor.startPlayer()
+            updateCurrentPosition()
         }
     }
 
 
     fun pausePlayer() {
-        interactor.pausePlayer()
-        playerState.value = playerState.value?.copy(isPlaying = false)
+        viewModelScope.launch {
+            timerJob?.cancel()
+            interactor.pausePlayer()
+        }
     }
 
     fun playbackControl() {
-        val isPlaying = interactor.playbackControl()
-        playerState.value = playerState.value?.copy(isPlaying = isPlaying)
+        when (playerState.value) {
+            is AudioPlayerState.Playing -> {
+                pausePlayer()
+                playerState.postValue(AudioPlayerState.Paused(interactor.currentPosition()))
+            }
+
+            is AudioPlayerState.Prepared, is AudioPlayerState.Paused -> {
+                startPlayer()
+                playerState.postValue(AudioPlayerState.Playing(interactor.currentPosition()))
+            }
+
+            else -> {
+                playerState.postValue(AudioPlayerState.Prepared())
+            }
+        }
     }
 
-    fun updateCurrentPosition() {
-        playerState.value = playerState.value?.copy(currentPosition = interactor.currentPosition())
+    private fun updateCurrentPosition() {
+        timerJob = viewModelScope.launch {
+            while (true) {
+                delay(UPDATE_TIME)
+                if (playerState.value is AudioPlayerState.Playing) {
+                    playerState.postValue(AudioPlayerState.Playing(interactor.currentPosition()))
+                }
+            }
+        }
     }
 
     fun release() {
-        interactor.release()
-        playerState.value =
-            playerState.value?.copy(isPlaying = false, isPrepared = false, currentPosition = 0)
+        viewModelScope.launch {
+            interactor.release()
+            playerState.value = AudioPlayerState.Default()
+        }
     }
 
     fun getCollectionNameVisibility(track: Track): Boolean {
         return !(track.collectionName.isEmpty() || track.collectionName.contains("Single"))
+    }
+
+    companion object {
+        private const val UPDATE_TIME = 300L
     }
 }
