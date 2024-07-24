@@ -12,7 +12,8 @@ import com.practicum.playlistmaker.databinding.FragmentLibraryBinding
 import com.practicum.playlistmaker.library.ui.view_model.LibraryViewModel
 
 class LibraryFragment : Fragment() {
-    private lateinit var binding: FragmentLibraryBinding
+    private var _binding: FragmentLibraryBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var tabMediator: TabLayoutMediator
 
@@ -23,7 +24,7 @@ class LibraryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentLibraryBinding.inflate(layoutInflater)
+        _binding = FragmentLibraryBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -44,6 +45,7 @@ class LibraryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         tabMediator.detach()
+        _binding = null
     }
 
     companion object {

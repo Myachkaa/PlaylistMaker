@@ -5,6 +5,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.practicum.playlistmaker.search.data.NetworkClient
 import com.practicum.playlistmaker.search.data.dto.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RetrofitNetworkClient(
     private val iTunsApi: ITunsApi,
@@ -28,19 +30,23 @@ class RetrofitNetworkClient(
         return false
     }
 
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
 
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
-        return if (dto is TrackSearchRequest) {
-            val resp = iTunsApi.getTracks(dto.expression).execute()
 
-            val body = resp.body() ?: Response()
+        if (dto !is TrackSearchRequest) {
+            return Response().apply { resultCode = 400 }
+        }
+        return withContext(Dispatchers.IO) {
+            try {
+                val resp = iTunsApi.getTracks(dto.expression)
+                resp.apply { resultCode = 200 }
 
-            body.apply { resultCode = resp.code() }
-        } else {
-            Response().apply { resultCode = 400 }
+            } catch (e: Throwable) {
+                Response().apply { resultCode = -1 }
+            }
         }
     }
 }

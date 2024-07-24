@@ -21,7 +21,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
     private var inputText: String = TEXT_DEF
     private val adapter = TrackAdapter()
@@ -33,7 +34,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -120,7 +121,7 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.onDestroy()
+        _binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -198,10 +199,6 @@ class SearchFragment : Fragment() {
             val audioPlayerIntent = Intent(requireContext(), AudioPlayerActivity::class.java)
             audioPlayerIntent.putExtra(KEY_TRACK, track)
             startActivity(audioPlayerIntent)
-
-            /*            findNavController().navigate(
-                            R.id.action_searchFragment_to_audioPlayerActivity,
-                            bundleOf(KEY_TRACK to track))*/
         }
     }
 
