@@ -40,7 +40,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
 
 
-        viewModel.pState.observe(this) { state ->
+        viewModel.playerState.observe(this) { state ->
 
             if (track != null) {
                 binding.playerTrackName.text = track.trackName

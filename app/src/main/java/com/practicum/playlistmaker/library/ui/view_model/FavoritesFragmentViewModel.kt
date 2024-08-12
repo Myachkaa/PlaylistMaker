@@ -24,13 +24,15 @@ class FavoritesFragmentViewModel(interactor: FavoritesInteractor) : ViewModel() 
 
 
     private var isClickAllowed = true
-    fun observeState(): LiveData<FavoritesState> = stateLiveData
+    fun observeState(): LiveData<FavoritesState> {
+        return stateLiveData
+    }
     fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
             viewModelScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
                 isClickAllowed = true
             }
         }
@@ -38,7 +40,7 @@ class FavoritesFragmentViewModel(interactor: FavoritesInteractor) : ViewModel() 
     }
 
     companion object {
-        const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
 
     }
 }

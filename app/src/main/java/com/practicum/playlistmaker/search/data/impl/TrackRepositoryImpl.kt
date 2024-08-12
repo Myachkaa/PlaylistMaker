@@ -20,7 +20,7 @@ class TrackRepositoryImpl(
     override fun searchTrack(expression: String): Flow<SearchResult<List<Track>>> = flow {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
         when (response.resultCode) {
-            200 -> {
+            SUCCESS_CODE -> {
                 val favoriteTrackIds =
                     appDatabase.trackDao().getFavoriteTracks().first().map { it.trackId }.toSet()
                 emit(SearchResult.Success((response as TracksResponse).tracks.map {
@@ -41,13 +41,18 @@ class TrackRepositoryImpl(
 
             }
 
-            -1 -> {
-                emit(SearchResult.Error(-1))
+            NETWORK_ERROR_CODE -> {
+                emit(SearchResult.Error(NETWORK_ERROR_CODE))
             }
 
             else -> {
-                emit(SearchResult.Error(0))
+                emit(SearchResult.Error(GENERAL_ERROR_CODE))
             }
         }
+    }
+    companion object {
+        private const val SUCCESS_CODE = 200
+        private const val NETWORK_ERROR_CODE = -1
+        private const val GENERAL_ERROR_CODE = 0
     }
 }
