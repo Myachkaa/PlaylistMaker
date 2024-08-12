@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(private val trackInteractor: TrackInteractor) : ViewModel() {
 
+
     private var isClickAllowed = true
     private val tracks = ArrayList<Track>()
     var searchText: String = TEXT_DEF
@@ -56,6 +57,10 @@ class SearchViewModel(private val trackInteractor: TrackInteractor) : ViewModel(
 
             else -> stateLiveData.postValue(SearchState.NotFound)
         }
+    }
+
+    fun setDefaultState() {
+        stateLiveData.postValue(SearchState.Default)
     }
 
     fun retryLastSearch() {

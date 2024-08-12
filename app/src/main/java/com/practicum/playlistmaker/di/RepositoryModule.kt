@@ -10,12 +10,15 @@ import com.practicum.playlistmaker.settings.data.SettingsRepository
 import com.practicum.playlistmaker.settings.data.impl.SettingsRepositoryImpl
 import com.practicum.playlistmaker.sharing.data.impl.ExternalNavigatorImpl
 import com.practicum.playlistmaker.sharing.domain.ExternalNavigator
+import com.practicum.playlistmaker.library.data.converters.TrackDbConvertor
+import com.practicum.playlistmaker.library.data.impl.FavoritesRepositoryImpl
+import com.practicum.playlistmaker.library.domain.db.FavoritesRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
 
     single<TrackRepository> {
-        TrackRepositoryImpl(get())
+        TrackRepositoryImpl(get(), get())
     }
 
     factory<AudioPlayerRepository> {
@@ -23,7 +26,7 @@ val repositoryModule = module {
     }
 
     single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(get(), get())
+        SearchHistoryRepositoryImpl(get(), get(), get())
     }
 
     single<SettingsRepository> {
@@ -32,5 +35,11 @@ val repositoryModule = module {
 
     single<ExternalNavigator> {
         ExternalNavigatorImpl(get())
+    }
+
+    factory { TrackDbConvertor() }
+
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl(get(), get())
     }
 }

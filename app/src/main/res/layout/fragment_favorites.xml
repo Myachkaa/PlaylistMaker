@@ -9,11 +9,16 @@
     android:theme="@style/Theme.PlaylistMaker"
     tools:context="com.practicum.playlistmaker.library.ui.activity.FavoritesFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewFavorites"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <TextView
         android:id="@+id/placeholderNotFound"
         style="@style/PlaceholderStyle"
         android:text="@string/empty_library"
-        android:visibility="visible"
         app:drawableTopCompat="@drawable/not_found" />
+
 
 </LinearLayout>

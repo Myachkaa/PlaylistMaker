@@ -45,6 +45,10 @@ class SearchFragment : Fragment() {
             setState(it)
         }
 
+        if (savedInstanceState == null) {
+            viewModel.setDefaultState()
+        }
+
         historyAdapter = TrackAdapter()
         binding.recyclerViewHistory.adapter = historyAdapter
         binding.recyclerViewHistory.layoutManager = LinearLayoutManager(requireContext())
@@ -134,6 +138,9 @@ class SearchFragment : Fragment() {
         if (savedInstanceState != null) {
             viewModel.searchText = savedInstanceState.getString(KEY_SEARCH_TEXT, TEXT_DEF)
         }
+        if (viewModel.searchText.isEmpty()) {
+            viewModel.setDefaultState()
+        }
     }
 
     private fun hideAllViews() {
@@ -214,6 +221,7 @@ class SearchFragment : Fragment() {
             is SearchState.HistoryTrackList -> historyVisibility()
             is SearchState.ServerError -> showServerError()
             is SearchState.NotFound -> showNotFound()
+            else -> hideAllViews()
         }
     }
 
