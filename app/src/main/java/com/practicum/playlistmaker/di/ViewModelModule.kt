@@ -15,7 +15,7 @@ val viewModelModule = module {
         SearchViewModel(get())
     }
     viewModel<AudioPlayerViewModel> {
-        AudioPlayerViewModel(get())
+        AudioPlayerViewModel(get(), get())
     }
 
     viewModel<SettingsViewModel> {
@@ -25,7 +25,7 @@ val viewModelModule = module {
         LibraryViewModel()
     }
     viewModel<FavoritesFragmentViewModel> {
-        FavoritesFragmentViewModel()
+        FavoritesFragmentViewModel(get())
     }
     viewModel<PlaylistsFragmentViewModel> {
         PlaylistsFragmentViewModel()

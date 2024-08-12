@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
@@ -11,6 +12,7 @@ import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.practicum.playlistmaker.player.domain.models.AudioPlayerState
 import com.practicum.playlistmaker.player.ui.view_model.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -28,10 +30,17 @@ class AudioPlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val track = intent.getParcelableExtra<Track>(KEY_TRACK)
-
         val url = track?.previewUrl
+        if (track != null) {
 
-        viewModel.pState.observe(this) { state ->
+            viewModel.isFavorite.observe(this) { isFavorite ->
+                updateFavoriteButton(isFavorite)
+            }
+            viewModel.setIsFavorite(track.isFavorite)
+        }
+
+
+        viewModel.playerState.observe(this) { state ->
 
             if (track != null) {
                 binding.playerTrackName.text = track.trackName
@@ -81,6 +90,24 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         binding.playButton.setOnClickListener { playbackControl() }
 
+        binding.playerFavourites.setOnClickListener {
+            if (track != null) {
+                viewModel.onFavoriteClicked(track)
+            }
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val track = intent.getParcelableExtra<Track>(KEY_TRACK)
+        if (track != null) {
+            lifecycleScope.launch {
+                val isFavorite = viewModel.isTrackFavorite(track.trackId)
+                viewModel.setIsFavorite(isFavorite)
+                track.isFavorite = isFavorite
+            }
+        }
     }
 
     override fun onPause() {
@@ -95,6 +122,14 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun playbackControl() {
         viewModel.playbackControl()
+    }
+
+    private fun updateFavoriteButton(isFavorite: Boolean) {
+        if (isFavorite) {
+            binding.playerFavourites.setImageResource(R.drawable.favorites_button)
+        } else {
+            binding.playerFavourites.setImageResource(R.drawable.favourites)
+        }
     }
 
     companion object {

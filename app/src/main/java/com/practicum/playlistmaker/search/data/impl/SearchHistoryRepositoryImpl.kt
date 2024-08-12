@@ -3,13 +3,17 @@ package com.practicum.playlistmaker.search.data.impl
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.practicum.playlistmaker.library.data.db.AppDatabase
 import com.practicum.playlistmaker.search.domain.api.SearchHistoryRepository
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 
 class SearchHistoryRepositoryImpl(
     private val sharedPref: SharedPreferences,
-    private val gson: Gson
+    private val gson: Gson,
+    private val appDatabase: AppDatabase
 ) : SearchHistoryRepository {
 
 
@@ -34,7 +38,14 @@ class SearchHistoryRepositoryImpl(
     override fun getSearchHistory(): List<Track> {
         val json = sharedPref.getString(SEARCH_HISTORY_KEY, null)
         val type = object : TypeToken<ArrayList<Track>>() {}.type
-        return gson.fromJson(json, type) ?: emptyList()
+        val history = gson.fromJson<ArrayList<Track>>(json, type) ?: arrayListOf()
+
+        val favoriteTrackIds = runBlocking {
+            appDatabase.trackDao().getFavoriteTracks().first().map { it.trackId }.toSet()
+        }
+        return history.map { track ->
+            track.copy(isFavorite = favoriteTrackIds.contains(track.trackId))
+        }
     }
 
     override fun clearSearchHistory() {
