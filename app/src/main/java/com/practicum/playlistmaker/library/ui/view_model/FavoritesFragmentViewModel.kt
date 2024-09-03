@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.library.domain.db.FavoritesInteractor
+import com.practicum.playlistmaker.library.domain.api.FavoritesInteractor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -27,6 +27,7 @@ class FavoritesFragmentViewModel(interactor: FavoritesInteractor) : ViewModel() 
     fun observeState(): LiveData<FavoritesState> {
         return stateLiveData
     }
+
     fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playlistFragmentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSecondary"
@@ -10,12 +11,21 @@
     tools:context="com.practicum.playlistmaker.library.ui.activity.PlaylistsFragment">
 
     <Button
+        android:id="@+id/newPlaylistButton"
         style="@style/FunctionalButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_24"
         android:text="@string/new_playlist_button"
         android:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlist"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/placeholderNotFound"

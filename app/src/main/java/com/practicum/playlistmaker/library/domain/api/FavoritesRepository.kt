@@ -1,10 +1,11 @@
-package com.practicum.playlistmaker.library.domain.db
+package com.practicum.playlistmaker.library.domain.api
 
 import com.practicum.playlistmaker.library.data.db.entity.TrackEntity
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 
-interface FavoritesInteractor {
+interface FavoritesRepository {
+
     suspend fun addToFavorites(trackEntity: TrackEntity)
     fun convertToTrackEntity(track: Track): TrackEntity
     suspend fun deleteFromFavorites(trackEntity: TrackEntity)

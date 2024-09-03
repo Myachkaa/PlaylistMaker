@@ -20,4 +20,19 @@
         android:name="com.practicum.playlistmaker.settings.ui.activity.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/createPlaylistFragment"
+        android:name="com.practicum.playlistmaker.library.ui.activity.CreatePlaylistFragment"
+        android:label="fragment_create_playlist"
+        tools:layout="@layout/fragment_create_playlist" />
+    <fragment
+        android:id="@+id/playlistsFragment"
+        android:name="com.practicum.playlistmaker.library.ui.activity.PlaylistsFragment"
+        android:label="fragment_playlists"
+        tools:layout="@layout/fragment_playlists" />
+    <activity
+        android:id="@+id/audioPlayerActivity"
+        android:name="com.practicum.playlistmaker.player.ui.activity.AudioPlayerActivity"
+        android:label="activity_audio_player"
+        tools:layout="@layout/activity_audio_player" />
 </navigation>
