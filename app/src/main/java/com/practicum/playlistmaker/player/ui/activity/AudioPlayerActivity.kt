@@ -98,31 +98,25 @@ class AudioPlayerActivity : AppCompatActivity() {
                     binding.playerCollectionNameValue.text = track.collectionName
                 }
 
-                when (state) {
-                    is AudioPlayerState.Playing -> binding.playButton.setImageResource(R.drawable.pause_button)
-
-                    else -> binding.playButton.setImageResource(R.drawable.play_button)
-                }
+                updatePlayButtonState()
             }
         }
         viewModel.trackAddStatus.observe(this) { status ->
-            val message = when (status) {
-                is TrackAddStatus.TrackAlreadyAdded -> getString(
-                    R.string.already_in_playlist,
-                    status.playlistName
+            when (status) {
+                is TrackAddStatus.TrackAlreadyAdded -> showCustomToast(
+                    getString(R.string.already_in_playlist, status.playlistName)
                 )
 
-                is TrackAddStatus.TrackAdded -> getString(
-                    R.string.added_to_playlist,
-                    status.playlistName
-                )
+                is TrackAddStatus.TrackAdded -> {
+                    showCustomToast(getString(R.string.added_to_playlist, status.playlistName))
+                    bottomSheetBehavior.state =
+                        BottomSheetBehavior.STATE_HIDDEN
+                }
 
-                is TrackAddStatus.TrackAddError -> getString(
-                    R.string.failed_to_add_to_playlist,
-                    status.playlistName
+                is TrackAddStatus.TrackAddError -> showCustomToast(
+                    getString(R.string.failed_to_add_to_playlist, status.playlistName)
                 )
             }
-            showCustomToast(message)
         }
 
         viewModel.preparePlayer(url)
@@ -177,6 +171,15 @@ class AudioPlayerActivity : AppCompatActivity() {
                 track.isFavorite = isFavorite
             }
         }
+        updatePlayButtonState()
+    }
+
+    private fun updatePlayButtonState() {
+        val currentState = viewModel.playerState.value
+        when (currentState) {
+            is AudioPlayerState.Playing -> binding.playButton.setImageResource(R.drawable.pause_button)
+            else -> binding.playButton.setImageResource(R.drawable.play_button)
+        }
     }
 
     private fun navigateToCreatePlaylist() {
@@ -191,6 +194,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         viewModel.pausePlayer()
+        updatePlayButtonState()
     }
 
     override fun onDestroy() {

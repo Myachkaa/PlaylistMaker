@@ -173,7 +173,7 @@ class CreatePlaylistFragment : Fragment() {
 
 
     private fun handleBackNavigation() {
-        if (binding.nameEditText.text?.isNotEmpty() == true || selectedImageUri != null) {
+        if (binding.nameEditText.text?.isNotEmpty() == true || selectedImageUri != null || binding.descriptionEditText.text?.isNotEmpty() == true) {
             showExitConfirmationDialog()
         } else {
             requireActivity().supportFragmentManager.popBackStack()

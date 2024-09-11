@@ -61,6 +61,7 @@ class AudioPlayerViewModel(
         viewModelScope.launch {
             timerJob?.cancel()
             interactor.pausePlayer()
+            _playerState.postValue(AudioPlayerState.Paused(interactor.currentPosition()))
         }
     }
 

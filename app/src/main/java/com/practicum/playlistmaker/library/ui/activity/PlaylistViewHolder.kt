@@ -1,11 +1,11 @@
 package com.practicum.playlistmaker.library.ui.activity
 
 import android.util.TypedValue
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.PlaylistGridLayoutBinding
 import com.practicum.playlistmaker.library.domain.models.Playlist
 
@@ -17,8 +17,11 @@ class PlaylistViewHolder(private val binding: PlaylistGridLayoutBinding) :
         binding.tvPlaylistTrackQty.text = trackCount(playlist.trackCount)
 
         if (playlist.coverImagePath.isNullOrEmpty()) {
-            binding.playlistCover.setImageResource(R.drawable.placeholder)
+            binding.playlistCover.isVisible = false
+            binding.placeholderImage.isVisible = true
         } else {
+            binding.placeholderImage.isVisible = false
+            binding.playlistCover.isVisible = true
             Glide.with(itemView.context)
                 .load(playlist.coverImagePath)
                 .transform(
@@ -30,7 +33,6 @@ class PlaylistViewHolder(private val binding: PlaylistGridLayoutBinding) :
                         ).toInt()
                     )
                 )
-                .placeholder(R.drawable.placeholder)
                 .into(binding.playlistCover)
         }
     }

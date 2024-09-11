@@ -9,9 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.library.domain.api.CreatePlaylistInteractor
 import com.practicum.playlistmaker.library.domain.models.Playlist
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 
 class CreatePlaylistViewModel(
     private val createPlaylistInteractor: CreatePlaylistInteractor
@@ -43,21 +40,6 @@ class CreatePlaylistViewModel(
     }
 
     fun copyImageToPrivateStorage(context: Context, uri: Uri): Uri? {
-        try {
-            val inputStream = context.contentResolver.openInputStream(uri)
-            val file = File(context.filesDir, "playlist_cover_${System.currentTimeMillis()}.jpg")
-            val outputStream = FileOutputStream(file)
-
-            inputStream?.use { input ->
-                outputStream.use { output ->
-                    input.copyTo(output)
-                }
-            }
-            return Uri.fromFile(file)
-        } catch (e: IOException) {
-            e.printStackTrace()
-            _playlistCreated.value = false
-            return null
-        }
+        return createPlaylistInteractor.copyImageToPrivateStorage(context, uri)
     }
 }

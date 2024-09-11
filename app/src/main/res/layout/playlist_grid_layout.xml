@@ -4,47 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/padding_4"
+    android:layout_marginHorizontal="@dimen/padding_8"
+    android:layout_marginTop="@dimen/padding_8"
+    android:layout_marginBottom="@dimen/padding_8"
     android:backgroundTint="?attr/colorSecondary"
     app:cardElevation="0dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_16">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/playlistCover"
+        <FrameLayout
+            android:id="@+id/imageContainer"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/playlist_rectangle"
-            android:scaleType="centerCrop"
-            android:src="@drawable/placeholder"
             app:layout_constraintBottom_toTopOf="@+id/playlistName"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintHeight_default="wrap"
-            app:layout_constraintHeight_max="0dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.9" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/playlistCover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/placeholderImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_28"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/playlistName"
             style="@style/TextStyle12"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/padding_0"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_4"
             android:textColor="?attr/colorOnPrimary"
-            app:layout_constraintTop_toBottomOf="@+id/playlistCover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageContainer"
             tools:text="Playlist Name" />
 
         <TextView
             android:id="@+id/tvPlaylistTrackQty"
             style="@style/TextStyle12"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="?attr/colorOnPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/playlistName"
             tools:text="0 треков" />
 
