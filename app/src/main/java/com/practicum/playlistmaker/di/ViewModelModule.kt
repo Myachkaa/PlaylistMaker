@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.library.ui.view_model.CreatePlaylistViewModel
 import com.practicum.playlistmaker.library.ui.view_model.FavoritesFragmentViewModel
 import com.practicum.playlistmaker.library.ui.view_model.LibraryViewModel
 import com.practicum.playlistmaker.library.ui.view_model.PlaylistsFragmentViewModel
@@ -15,7 +16,7 @@ val viewModelModule = module {
         SearchViewModel(get())
     }
     viewModel<AudioPlayerViewModel> {
-        AudioPlayerViewModel(get(), get())
+        AudioPlayerViewModel(get(), get(), get())
     }
 
     viewModel<SettingsViewModel> {
@@ -28,6 +29,9 @@ val viewModelModule = module {
         FavoritesFragmentViewModel(get())
     }
     viewModel<PlaylistsFragmentViewModel> {
-        PlaylistsFragmentViewModel()
+        PlaylistsFragmentViewModel(get())
+    }
+    viewModel {
+        CreatePlaylistViewModel(get())
     }
 }

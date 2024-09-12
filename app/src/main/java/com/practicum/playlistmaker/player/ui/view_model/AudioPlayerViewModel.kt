@@ -5,9 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.library.domain.db.FavoritesInteractor
+import com.practicum.playlistmaker.library.domain.api.FavoritesInteractor
+import com.practicum.playlistmaker.library.domain.api.PlaylistInteractor
+import com.practicum.playlistmaker.library.domain.models.Playlist
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.models.AudioPlayerState
+import com.practicum.playlistmaker.player.domain.models.TrackAddStatus
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -16,7 +19,8 @@ import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
     private val interactor: AudioPlayerInteractor,
-    private val dbInteractor: FavoritesInteractor
+    private val dbInteractor: FavoritesInteractor,
+    private val playlistInteractor: PlaylistInteractor,
 ) : ViewModel() {
 
     private val _playerState = MutableLiveData<AudioPlayerState>(AudioPlayerState.Default())
@@ -24,6 +28,12 @@ class AudioPlayerViewModel(
 
     private val _isFavorite = MutableLiveData<Boolean>()
     val isFavorite: LiveData<Boolean> get() = _isFavorite
+
+    private val _trackAddStatus = MutableLiveData<TrackAddStatus>()
+    val trackAddStatus: LiveData<TrackAddStatus> get() = _trackAddStatus
+
+    private val _playlists = MutableLiveData<List<Playlist>>()
+    val playlists: LiveData<List<Playlist>> get() = _playlists
 
     private var timerJob: Job? = null
 
@@ -51,6 +61,7 @@ class AudioPlayerViewModel(
         viewModelScope.launch {
             timerJob?.cancel()
             interactor.pausePlayer()
+            _playerState.postValue(AudioPlayerState.Paused(interactor.currentPosition()))
         }
     }
 
@@ -113,6 +124,36 @@ class AudioPlayerViewModel(
 
     fun setIsFavorite(isFavorite: Boolean) {
         _isFavorite.postValue(isFavorite)
+    }
+
+    fun loadPlaylists() {
+        viewModelScope.launch {
+            playlistInteractor.getAllPlaylists().collect { playlistList ->
+                _playlists.postValue(playlistList)
+            }
+        }
+    }
+
+    fun addTrackToPlaylist(track: Track, playlist: Playlist) {
+        viewModelScope.launch {
+            if (playlist.trackIds.contains(track.trackId.toString())) {
+                _trackAddStatus.postValue(TrackAddStatus.TrackAlreadyAdded(playlist.name))
+            } else {
+                try {
+                    playlistInteractor.addTrackToPlaylist(track, playlist.id)
+                    val updatedTrackIds = playlist.trackIds + ",${track.trackId}"
+                    val updatedPlaylist = playlist.copy(
+                        trackIds = updatedTrackIds,
+                        trackCount = playlist.trackCount + 1
+                    )
+                    playlistInteractor.updatePlaylist(updatedPlaylist)
+                    _trackAddStatus.postValue(TrackAddStatus.TrackAdded(playlist.name))
+                    loadPlaylists()
+                } catch (e: Exception) {
+                    _trackAddStatus.postValue(TrackAddStatus.TrackAddError(playlist.name))
+                }
+            }
+        }
     }
 
     companion object {

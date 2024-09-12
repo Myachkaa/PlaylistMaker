@@ -1,8 +1,8 @@
 package com.practicum.playlistmaker.library.domain.impl
 
 import com.practicum.playlistmaker.library.data.db.entity.TrackEntity
-import com.practicum.playlistmaker.library.domain.db.FavoritesInteractor
-import com.practicum.playlistmaker.library.domain.db.FavoritesRepository
+import com.practicum.playlistmaker.library.domain.api.FavoritesInteractor
+import com.practicum.playlistmaker.library.domain.api.FavoritesRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 

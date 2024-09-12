@@ -23,7 +23,5 @@ class TrackAdapter : RecyclerView.Adapter<TracksViewHolder>() {
     }
 
     override fun getItemCount(): Int = tracks.size
-
-
 }
 
