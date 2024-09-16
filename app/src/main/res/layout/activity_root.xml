@@ -22,6 +22,7 @@
         app:navGraph="@navigation/navigation_graph" />
 
     <View
+        android:id="@+id/bottomNavigationSeparator"
         android:layout_width="match_parent"
         android:layout_height="@dimen/padding_1"
         android:background="@color/light_gray"

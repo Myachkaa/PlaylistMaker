@@ -1,11 +1,10 @@
 package com.practicum.playlistmaker.library.data.db.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity(tableName = "playlist_tracks")
+@Entity(tableName = "playlist_tracks", primaryKeys = ["trackId", "playlistId"])
 data class PlaylistTrackEntity(
-    @PrimaryKey val trackId: Long,
-    @ColumnInfo(name = "playlist_id") val playlistId: Long
+    val trackId: Long,
+    val playlistId: Long,
+    val addedAt: Long
 )

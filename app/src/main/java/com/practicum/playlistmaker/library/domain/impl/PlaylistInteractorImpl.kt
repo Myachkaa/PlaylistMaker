@@ -19,4 +19,8 @@ class PlaylistInteractorImpl(private val repository: PlaylistRepository) : Playl
         repository.updatePlaylist(playlist)
     }
 
+    override suspend fun deletePlaylist(playlistId: Long) {
+        repository.deletePlaylist(playlistId)
+    }
+
 }

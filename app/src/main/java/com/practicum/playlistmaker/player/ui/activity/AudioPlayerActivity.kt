@@ -150,8 +150,8 @@ class AudioPlayerActivity : AppCompatActivity() {
                 BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     when (newState) {
-                        BottomSheetBehavior.STATE_HIDDEN -> binding.overlay.visibility = View.GONE
-                        else -> binding.overlay.visibility = View.VISIBLE
+                        BottomSheetBehavior.STATE_HIDDEN -> binding.overlay.isVisible = false
+                        else -> binding.overlay.isVisible = true
                     }
                 }
 

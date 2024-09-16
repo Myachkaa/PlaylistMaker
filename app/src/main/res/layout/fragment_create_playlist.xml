@@ -8,82 +8,99 @@
     android:background="?attr/colorSecondary"
     tools:context="com.practicum.playlistmaker.library.ui.activity.CreatePlaylistFragment">
 
-    <ImageView
-        android:id="@+id/backButton"
-        style="@style/BackButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/createButton"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        style="@style/HeadingStyle"
-        android:layout_marginStart="@dimen/padding_44"
-        android:text="@string/new_playlist"
-        app:layout_constraintStart_toStartOf="@+id/backButton"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/placeForCover"
-        android:layout_width="@dimen/padding_0"
-        android:layout_height="@dimen/padding_0"
-        android:layout_marginStart="@dimen/padding_24"
-        android:layout_marginTop="@dimen/padding_80"
-        android:layout_marginEnd="@dimen/padding_24"
-        android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/empty_cover" />
-
-    <ImageView
-        android:id="@+id/playerTrackArtwork"
-        android:layout_width="@dimen/padding_80"
-        android:layout_height="@dimen/padding_80"
-        app:layout_constraintBottom_toBottomOf="@+id/placeForCover"
-        app:layout_constraintEnd_toEndOf="@+id/placeForCover"
-        app:layout_constraintStart_toStartOf="@+id/placeForCover"
-        app:layout_constraintTop_toTopOf="@+id/placeForCover"
-        app:srcCompat="@drawable/add_cover" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/nameInputLayout"
-        style="@style/CreatePlaylistEditText"
-        android:layout_width="@dimen/padding_0"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/padding_16"
-        android:layout_marginTop="@dimen/padding_32"
-        android:layout_marginEnd="@dimen/padding_16"
-        android:hint="@string/playlist_name_edit_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/placeForCover">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nameEditText"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/padding_56"
-            android:paddingStart="@dimen/padding_16" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding_16">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/descriptionInputLayout"
-        style="@style/CreatePlaylistEditText"
-        android:layout_width="@dimen/padding_0"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/padding_16"
-        android:layout_marginTop="@dimen/padding_16"
-        android:layout_marginEnd="@dimen/padding_16"
-        android:hint="@string/description_edit_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameInputLayout">
+            <ImageView
+                android:id="@+id/backButton"
+                style="@style/BackButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/descriptionEditText"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/padding_56"
-            android:paddingStart="@dimen/padding_16" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/screenTitle"
+                style="@style/HeadingStyle"
+                android:layout_marginStart="@dimen/padding_0"
+                android:text="@string/new_playlist"
+                app:layout_constraintStart_toEndOf="@+id/backButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/placeForCover"
+                android:layout_width="@dimen/padding_0"
+                android:layout_height="@dimen/padding_0"
+                android:layout_marginStart="@dimen/padding_24"
+                android:layout_marginTop="@dimen/padding_80"
+                android:layout_marginEnd="@dimen/padding_24"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/empty_cover" />
+
+            <ImageView
+                android:id="@+id/playerTrackArtwork"
+                android:layout_width="@dimen/padding_80"
+                android:layout_height="@dimen/padding_80"
+                app:layout_constraintBottom_toBottomOf="@+id/placeForCover"
+                app:layout_constraintEnd_toEndOf="@+id/placeForCover"
+                app:layout_constraintStart_toStartOf="@+id/placeForCover"
+                app:layout_constraintTop_toTopOf="@+id/placeForCover"
+                app:srcCompat="@drawable/add_cover" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nameInputLayout"
+                style="@style/CreatePlaylistEditText"
+                android:layout_width="@dimen/padding_0"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_16"
+                android:layout_marginTop="@dimen/padding_32"
+                android:layout_marginEnd="@dimen/padding_16"
+                android:hint="@string/playlist_name_edit_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/placeForCover">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_56"
+                    android:paddingStart="@dimen/padding_16" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/descriptionInputLayout"
+                style="@style/CreatePlaylistEditText"
+                android:layout_width="@dimen/padding_0"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_16"
+                android:layout_marginTop="@dimen/padding_16"
+                android:layout_marginEnd="@dimen/padding_16"
+                android:hint="@string/description_edit_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nameInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/descriptionEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_56"
+                    android:paddingStart="@dimen/padding_16" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/createButton"
@@ -100,6 +117,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:cornerRadius="@dimen/padding_8"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

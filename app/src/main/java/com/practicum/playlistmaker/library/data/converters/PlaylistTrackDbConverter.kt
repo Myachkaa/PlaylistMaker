@@ -14,7 +14,8 @@ class PlaylistTrackDbConverter {
     fun map(playlistTrack: PlaylistTrack): PlaylistTrackEntity {
         return PlaylistTrackEntity(
             playlistTrack.trackId,
-            playlistTrack.playlistId
+            playlistTrack.playlistId,
+            addedAt = System.currentTimeMillis()
         )
     }
 }

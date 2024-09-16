@@ -41,7 +41,7 @@ class SearchHistoryRepositoryImpl(
         val history = gson.fromJson<ArrayList<Track>>(json, type) ?: arrayListOf()
 
         val favoriteTrackIds = runBlocking {
-            appDatabase.trackDao().getFavoriteTracks().first().map { it.trackId }.toSet()
+            appDatabase.favoritesDao().getFavoriteTracks().first().map { it.trackId }.toSet()
         }
         return history.map { track ->
             track.copy(isFavorite = favoriteTrackIds.contains(track.trackId))

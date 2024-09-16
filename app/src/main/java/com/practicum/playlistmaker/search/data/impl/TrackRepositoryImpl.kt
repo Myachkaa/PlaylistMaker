@@ -22,7 +22,8 @@ class TrackRepositoryImpl(
         when (response.resultCode) {
             SUCCESS_CODE -> {
                 val favoriteTrackIds =
-                    appDatabase.trackDao().getFavoriteTracks().first().map { it.trackId }.toSet()
+                    appDatabase.favoritesDao().getFavoriteTracks().first().map { it.trackId }
+                        .toSet()
                 emit(SearchResult.Success((response as TracksResponse).tracks.map {
                     Track(
                         it.trackId,
@@ -50,6 +51,7 @@ class TrackRepositoryImpl(
             }
         }
     }
+
     companion object {
         private const val SUCCESS_CODE = 200
         private const val NETWORK_ERROR_CODE = -1

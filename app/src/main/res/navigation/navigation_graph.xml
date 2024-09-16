@@ -14,7 +14,11 @@
         android:id="@+id/libraryFragment"
         android:name="com.practicum.playlistmaker.library.ui.activity.LibraryFragment"
         android:label="fragment_library"
-        tools:layout="@layout/fragment_library" />
+        tools:layout="@layout/fragment_library">
+        <action
+            android:id="@+id/action_libraryFragment_to_playlistViewingFragment"
+            app:destination="@id/playlistViewingFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.practicum.playlistmaker.settings.ui.activity.SettingsFragment"
@@ -29,10 +33,25 @@
         android:id="@+id/playlistsFragment"
         android:name="com.practicum.playlistmaker.library.ui.activity.PlaylistsFragment"
         android:label="fragment_playlists"
-        tools:layout="@layout/fragment_playlists" />
+        tools:layout="@layout/fragment_playlists">
+        <action
+            android:id="@+id/action_playlistsFragment_to_playlistViewingFragment"
+            app:destination="@id/playlistViewingFragment" />
+    </fragment>
+
     <activity
         android:id="@+id/audioPlayerActivity"
         android:name="com.practicum.playlistmaker.player.ui.activity.AudioPlayerActivity"
         android:label="activity_audio_player"
         tools:layout="@layout/activity_audio_player" />
+    <fragment
+        android:id="@+id/playlistViewingFragment"
+        android:name="com.practicum.playlistmaker.library.ui.activity.PlaylistViewingFragment"
+        android:label="fragment_playlist_viewing"
+        tools:layout="@layout/fragment_playlist_viewing">
+        <argument
+            android:name="playlistId"
+            app:argType="long" />
+
+    </fragment>
 </navigation>

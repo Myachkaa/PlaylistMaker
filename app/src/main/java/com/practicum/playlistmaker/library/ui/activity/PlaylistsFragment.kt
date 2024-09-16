@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
@@ -36,6 +37,11 @@ class PlaylistsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         playlistAdapter = PlaylistAdapter(mutableListOf())
+        playlistAdapter.onItemClick = { playlist ->
+            val action =
+                LibraryFragmentDirections.actionLibraryFragmentToPlaylistViewingFragment(playlist.id)
+            findNavController().navigate(action)
+        }
         binding.playlist.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = playlistAdapter
@@ -43,12 +49,12 @@ class PlaylistsFragment : Fragment() {
 
         viewModel.playlists.observe(viewLifecycleOwner) { playlists ->
             if (playlists.isNotEmpty()) {
-                binding.playlist.visibility = View.VISIBLE
-                binding.placeholderNotFound.visibility = View.GONE
+                binding.playlist.isVisible = true
+                binding.placeholderNotFound.isVisible = false
                 playlistAdapter.setPlaylists(playlists)
             } else {
-                binding.playlist.visibility = View.GONE
-                binding.placeholderNotFound.visibility = View.VISIBLE
+                binding.playlist.isVisible = false
+                binding.placeholderNotFound.isVisible = true
             }
         }
 
