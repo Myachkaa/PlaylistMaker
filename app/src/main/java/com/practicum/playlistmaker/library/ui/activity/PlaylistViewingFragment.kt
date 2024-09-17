@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,8 +50,7 @@ class PlaylistViewingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val playlistId = args.playlistId
-
+        val playlistId = arguments?.getLong(PLAYLIST_ID) ?: return
         viewModel.loadPlaylist(playlistId)
 
         setupUI()
@@ -60,6 +59,16 @@ class PlaylistViewingFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = trackAdapter
         }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
+            PLAYLIST_UPDATED
+        )
+            ?.observe(viewLifecycleOwner) { updated ->
+                if (updated) {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                }
+            }
+
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetOption)
         bottomSheetBehavior.apply {
             state = BottomSheetBehavior.STATE_HIDDEN
@@ -99,7 +108,7 @@ class PlaylistViewingFragment : Fragment() {
         binding.editPlaylist.setOnClickListener {
             val playlist = viewModel.playlist.value
             playlist?.let {
-                navigateToEditPlaylist(it)
+                navigateToEditPlaylist(playlist.id)
             }
         }
 
@@ -143,7 +152,11 @@ class PlaylistViewingFragment : Fragment() {
         binding.playlistDescription.text = playlist.description
         binding.imageViewArtwork
         binding.textViewPlaylistName.text = playlist.name
-        binding.textViewTrackCount.text = viewModel.trackCount(playlist.trackCount)
+        binding.textViewTrackCount.text = resources.getQuantityString(
+            R.plurals.track_count,
+            playlist.trackCount,
+            playlist.trackCount
+        )
 
         Glide.with(this)
             .load(playlist.coverImagePath)
@@ -202,8 +215,13 @@ class PlaylistViewingFragment : Fragment() {
         val totalDurationInMillis = tracks.sumOf { it.trackTime }
         val totalDurationInMinutes = totalDurationInMillis / 60000
 
-        binding.playlistDuration.text = viewModel.formatDurationInMinutes(totalDurationInMinutes)
-        binding.quantity.text = viewModel.trackCount(tracks.size)
+        binding.playlistDuration.text = resources.getQuantityString(
+            R.plurals.minute_count,
+            totalDurationInMinutes.toInt(),
+            totalDurationInMinutes
+        )
+        binding.quantity.text =
+            resources.getQuantityString(R.plurals.track_count, tracks.size, tracks.size)
     }
 
     private fun showCustomToast(message: String) {
@@ -226,6 +244,7 @@ class PlaylistViewingFragment : Fragment() {
         } else {
             val shareText = viewModel.createShareText(viewModel.playlist.value)
             sharePlaylist(shareText)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
 
@@ -244,16 +263,20 @@ class PlaylistViewingFragment : Fragment() {
         findNavController().popBackStack()
     }
 
-    private fun navigateToEditPlaylist(playlist: Playlist) {
-        val fragment = EditPlaylistFragment.newInstance(playlist)
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
-            .commit()
+    private fun navigateToEditPlaylist(playlistId: Long) {
+        val bundle = Bundle().apply {
+            putLong(PLAYLIST_ID, playlistId)
+        }
+        findNavController().navigate(R.id.editPlaylistFragment, bundle)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val PLAYLIST_ID = "playlistId"
+        private const val PLAYLIST_UPDATED = "playlist_updated"
     }
 }

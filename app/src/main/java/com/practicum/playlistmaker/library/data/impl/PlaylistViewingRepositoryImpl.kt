@@ -15,7 +15,7 @@ class PlaylistViewingRepositoryImpl(
     private val playlistDbConverter: PlaylistDbConverter
 ) : PlaylistViewingRepository {
     override fun getPlaylistById(playlistId: Long): Flow<Playlist?> {
-        return appDatabase.playlistDao().getPlaylistById(playlistId)
+        return appDatabase.playlistDao().getPlaylistByIdFlow(playlistId)
             .map { entity -> entity?.let { playlistDbConverter.map(it) } }
     }
 

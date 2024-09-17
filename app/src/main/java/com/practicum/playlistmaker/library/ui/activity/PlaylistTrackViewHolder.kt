@@ -14,7 +14,11 @@ class PlaylistTrackViewHolder(private val binding: PlaylistLayoutBinding) :
 
     fun bind(playlist: Playlist) {
         binding.textViewPlaylistName.text = playlist.name
-        binding.textViewTrackCount.text = trackCount(playlist.trackCount)
+        binding.textViewTrackCount.text = itemView.resources.getQuantityString(
+            R.plurals.track_count,
+            playlist.trackCount,
+            playlist.trackCount
+        )
 
         Glide.with(itemView)
             .load(playlist.coverImagePath)
@@ -31,12 +35,5 @@ class PlaylistTrackViewHolder(private val binding: PlaylistLayoutBinding) :
                 )
             )
             .into(binding.imageViewArtwork)
-    }
-
-    private fun trackCount(trackQty: Int): String {
-        if (trackQty % 100 in 5..20) return "$trackQty треков"
-        if (trackQty % 10 == 1) return "$trackQty трек"
-        if (trackQty % 10 in 2..4) return "$trackQty трека"
-        else return "$trackQty треков"
     }
 }

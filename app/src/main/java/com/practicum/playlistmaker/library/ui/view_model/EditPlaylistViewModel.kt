@@ -10,8 +10,8 @@ class EditPlaylistViewModel(
     private val interactor: CreatePlaylistInteractor,
 ) : CreatePlaylistViewModel(interactor) {
 
-    private lateinit var playlist: Playlist
-    fun setPlaylistForEditing(playlist: Playlist) {
+    private var playlist: Playlist? = null
+    private fun setPlaylistForEditing(playlist: Playlist) {
         this.playlist = playlist
         _name.value = playlist.name
         _description.value = playlist.description ?: ""
@@ -22,17 +22,29 @@ class EditPlaylistViewModel(
         }
     }
 
+    fun loadPlaylist(playlistId: Long) {
+        viewModelScope.launch {
+            val loadedPlaylist = interactor.getPlaylistById(playlistId)
+            if (loadedPlaylist != null) {
+                setPlaylistForEditing(loadedPlaylist)
+            }
+        }
+    }
+
     fun savePlaylist(name: String, description: String?, coverImagePath: String?) {
         viewModelScope.launch {
             try {
-                val updatedPlaylist = playlist.copy(
+                val updatedPlaylist = playlist?.copy(
                     name = name,
                     description = description,
-                    coverImagePath = coverImagePath ?: playlist.coverImagePath
+                    coverImagePath = coverImagePath ?: playlist?.coverImagePath
                 )
-                interactor.updatePlaylist(updatedPlaylist)
-
-                _playlistCreated.postValue(true)
+                if (updatedPlaylist != null) {
+                    interactor.updatePlaylist(updatedPlaylist)
+                    _playlistCreated.postValue(true)
+                } else {
+                    _playlistCreated.postValue(false)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _playlistCreated.postValue(false)

@@ -64,36 +64,14 @@ class PlaylistViewingViewModel(
 
         val playlistName = playlist?.name
         val playlistDescription = playlist?.description?.takeIf { it.isNotBlank() } ?: ""
-        val trackCountText = trackCount(tracks.size)
 
         return buildString {
             append(playlistName)
             if (playlistDescription.isNotBlank()) {
                 append("\n$playlistDescription")
             }
-            append("\n$trackCountText")
             append("\n\n$trackListText")
         }.trim()
-    }
-
-    fun trackCount(trackQty: Int): String {
-        return when {
-            trackQty % 100 in 5..20 -> "$trackQty треков"
-            trackQty % 10 == 1 -> "$trackQty трек"
-            trackQty % 10 in 2..4 -> "$trackQty трека"
-            else -> "$trackQty треков"
-        }
-    }
-
-    fun formatDurationInMinutes(totalDurationInMinutes: Long): String {
-        val formattedDuration = totalDurationInMinutes.toString()
-
-        return when {
-            totalDurationInMinutes % 100 in 11..19 -> "$formattedDuration минут"
-            totalDurationInMinutes % 10 == 1L -> "$formattedDuration минута"
-            totalDurationInMinutes % 10 in 2..4 -> "$formattedDuration минуты"
-            else -> "$formattedDuration минут"
-        }
     }
 
     private fun formatDuration(trackTime: Long): String {

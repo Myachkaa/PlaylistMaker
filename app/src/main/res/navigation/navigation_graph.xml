@@ -54,4 +54,12 @@
             app:argType="long" />
 
     </fragment>
+    <fragment
+        android:id="@+id/editPlaylistFragment"
+        android:name="com.practicum.playlistmaker.library.ui.activity.EditPlaylistFragment"
+        android:label="Edit Playlist">
+        <argument
+            android:name="playlistId"
+            app:argType="long" />
+    </fragment>
 </navigation>
