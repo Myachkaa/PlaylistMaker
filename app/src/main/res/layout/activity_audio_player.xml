@@ -15,7 +15,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="@dimen/padding_16" />
 
     <ScrollView
         android:id="@+id/player_screen_view"
@@ -241,20 +241,20 @@
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="504dp"
+        android:layout_height="@dimen/padding_500"
         android:background="@drawable/bottom_sheet"
         android:backgroundTint="?attr/colorSecondary"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="500dp"
+        app:behavior_peekHeight="@dimen/padding_500"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
-            android:layout_width="50dp"
-            android:layout_height="4dp"
+            android:layout_width="@dimen/padding_50"
+            android:layout_height="@dimen/padding_4"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/padding_10"
             android:background="@drawable/bottom_sheet_strip" />
 
         <TextView
@@ -265,7 +265,7 @@
             android:layout_marginTop="@dimen/padding_16"
             android:layout_marginBottom="@dimen/padding_12"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="@dimen/padding_10"
             android:text="Добавить в плейлист"
             android:textColor="@color/black" />
 

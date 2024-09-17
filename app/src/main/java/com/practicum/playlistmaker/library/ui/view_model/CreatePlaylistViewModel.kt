@@ -10,13 +10,21 @@ import com.practicum.playlistmaker.library.domain.api.CreatePlaylistInteractor
 import com.practicum.playlistmaker.library.domain.models.Playlist
 import kotlinx.coroutines.launch
 
-class CreatePlaylistViewModel(
+open class CreatePlaylistViewModel(
     private val createPlaylistInteractor: CreatePlaylistInteractor
 ) : ViewModel() {
 
-    private val _playlistCreated = MutableLiveData<Boolean>()
+    protected val _playlistCreated = MutableLiveData<Boolean>()
     val playlistCreated: LiveData<Boolean> get() = _playlistCreated
 
+    protected val _name = MutableLiveData<String>()
+    val name: LiveData<String> get() = _name
+
+    protected val _description = MutableLiveData<String>()
+    val description: LiveData<String> get() = _description
+
+    protected val _coverImageUri = MutableLiveData<Uri?>()
+    val coverImageUri: LiveData<Uri?> get() = _coverImageUri
     fun createPlaylist(name: String, description: String?, coverImagePath: String?) {
         viewModelScope.launch {
             try {

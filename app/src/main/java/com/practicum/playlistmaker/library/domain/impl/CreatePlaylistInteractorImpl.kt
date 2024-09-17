@@ -16,9 +16,11 @@ class CreatePlaylistInteractorImpl(private val repository: CreatePlaylistReposit
         return repository.updatePlaylist(playlist)
     }
 
+    override suspend fun getPlaylistById(playlistId: Long): Playlist? {
+        return repository.getPlaylistById(playlistId)
+    }
+
     override fun copyImageToPrivateStorage(context: Context, uri: Uri): Uri? {
         return repository.copyImageToPrivateStorage(context, uri)
     }
-
-
 }

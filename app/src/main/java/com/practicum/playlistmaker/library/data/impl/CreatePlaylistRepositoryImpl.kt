@@ -22,6 +22,11 @@ class CreatePlaylistRepositoryImpl(
         appDatabase.playlistDao().updatePlaylist(playlistDbConvertor.map(playlist))
     }
 
+    override suspend fun getPlaylistById(playlistId: Long): Playlist? {
+        val playlistDbModel = appDatabase.playlistDao().getPlaylistById(playlistId)
+        return playlistDbModel?.let { playlistDbConvertor.map(it) }
+    }
+
     override fun copyImageToPrivateStorage(context: Context, uri: Uri): Uri? {
         return try {
             val inputStream = context.contentResolver.openInputStream(uri)

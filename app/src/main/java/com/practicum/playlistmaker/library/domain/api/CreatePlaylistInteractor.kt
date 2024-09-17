@@ -8,6 +8,7 @@ interface CreatePlaylistInteractor {
     suspend fun addPlaylist(playlist: Playlist)
 
     suspend fun updatePlaylist(playlist: Playlist)
+    suspend fun getPlaylistById(playlistId: Long): Playlist?
     fun copyImageToPrivateStorage(context: Context, uri: Uri): Uri?
 
 }

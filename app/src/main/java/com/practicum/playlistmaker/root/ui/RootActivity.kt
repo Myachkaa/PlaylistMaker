@@ -26,6 +26,8 @@ class RootActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.createPlaylistFragment -> hideBottomNavigationView()
+                R.id.playlistViewingFragment -> hideBottomNavigationView()
+                R.id.editPlaylistFragment -> hideBottomNavigationView()
                 else -> showBottomNavigationView()
             }
         }
@@ -33,9 +35,11 @@ class RootActivity : AppCompatActivity() {
 
     private fun hideBottomNavigationView() {
         binding.bottomNavigationView.isVisible = false
+        binding.bottomNavigationSeparator.isVisible = false
     }
 
     private fun showBottomNavigationView() {
         binding.bottomNavigationView.isVisible = true
+        binding.bottomNavigationSeparator.isVisible = true
     }
 }
